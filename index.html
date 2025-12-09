@@ -338,165 +338,244 @@
     </div>
   </main>
 
-<script>
-  const tg = window.Telegram.WebApp || null;
-  if (tg) {
-    tg.ready();
-    tg.expand();
-  }
+  <script>
+    const tg = window.Telegram.WebApp || null;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
 
-  const form = document.getElementById('storyForm');
-  const submitBtn = document.getElementById('submitBtn');
+    const form = document.getElementById('storyForm');
+    const submitBtn = document.getElementById('submitBtn');
 
-  // === словари переводов оставляем как есть (ваш блок translations) ===
-  const translations = { /* ... весь ваш объект translations без изменений ... */ };
-
-  let currentLang = 'ru';
-
-  function applyTranslations(lang) {
-    const t = translations[lang];
-    currentLang = lang;
-    document.documentElement.lang = lang;
-
-    document.getElementById('title').textContent = t.title;
-    document.getElementById('description').textContent = t.description;
-
-    document.getElementById('label_child_name').textContent = t.child_name_label;
-    document.getElementById('label_main_photo').textContent = t.main_photo_label;
-    document.getElementById('hint_main_photo').textContent = t.main_photo_hint;
-    document.getElementById('label_second_character_name').textContent = t.second_character_label;
-    document.getElementById('hint_second_photo').textContent = t.second_photo_hint;
-    document.getElementById('label_second_photo').textContent = t.second_photo_label;
-    document.getElementById('label_educational_plot').textContent = t.educational_plot_label;
-    document.getElementById('label_narrative_style').textContent = t.narrative_style_label;
-    document.getElementById('label_setting').textContent = t.setting_label;
-    document.getElementById('label_language').textContent = t.language_label;
-    document.getElementById('label_age_group').textContent = t.age_group_label;
-
-    form.child_name.placeholder = t.child_name_placeholder;
-    form.second_character_name.placeholder = t.second_character_placeholder;
-    form.setting.placeholder = t.setting_placeholder;
-
-    const educationalSelect = form.educational_plot;
-    for (const option of educationalSelect.options) {
-      const key = option.value;
-      if (t.educational_plot_options[key]) {
-        option.textContent = t.educational_plot_options[key];
+    const translations = {
+      ru: {
+        title: 'Создать сказку',
+        description: 'Заполните параметры — бот сгенерирует персональную сказку и отправит её в чат в виде PDF-книги.',
+        child_name_label: 'Имя главного героя *',
+        child_name_placeholder: 'Например, Арина',
+        main_photo_label: 'Фото главного героя (опционально)',
+        main_photo_hint: 'Выберите фотографию или сделайте снимок.',
+        second_character_label: 'Имя второго героя (опционально)',
+        second_character_placeholder: 'Можно оставить пустым',
+        second_photo_label: 'Фото второго героя (опционально)',
+        second_photo_hint: 'Выберите фотографию или сделайте снимок.',
+        educational_plot_label: 'Поучительный сюжет *',
+        educational_plot_options: {
+          kindness_help: 'Доброта и помощь другим',
+          power_of_friendship: 'Сила дружбы',
+          honesty_trust: 'Честность и доверие',
+          accepting_differences: 'Принятие различий',
+          admitting_mistakes: 'Умение признавать ошибки',
+          patience_perseverance: 'Терпение и настойчивость',
+          care_for_nature: 'Забота о природе',
+          safety_caution: 'Безопасность и осторожность',
+          respect_parents_adults: 'Уважение к родителям и взрослым',
+          sharing: 'Умение делиться',
+          independence_responsibility: 'Самостоятельность и ответственность',
+          emotions_expression: 'Эмоции и умение говорить о них',
+          anti_bullying: 'Противостояние буллингу',
+          value_of_work: 'Ценность труда',
+          tidiness_order: 'Аккуратность и порядок',
+          gadgets_moderation: 'Умеренность в гаджетах',
+          gratitude: 'Благодарность',
+          imagination_creativity: 'Воображение и творчество'
+        },
+        narrative_style_label: 'Стиль повествования *',
+        narrative_style_options: {
+          gentle_meditative: 'Спокойный медитативный',
+          adventurous: 'Приключенческий',
+          mysterious: 'Загадочный',
+          humorous: 'С юмором',
+          lyrical: 'Лирический'
+        },
+        setting_label: 'Место действия (опционально)',
+        setting_placeholder: 'Лес, море, космический город…',
+        language_label: 'Язык сказки *',
+        language_options: {
+          ru: 'Русский',
+          en: 'English'
+        },
+        age_group_label: 'Возраст ребёнка *',
+        age_group_options: {
+          toddler: '1–3 года',
+          preschool: '4–6 лет',
+          primary: '7–9 лет',
+          preteen: '10–12 лет'
+        },
+        submit: 'Создать сказку',
+        note: 'Фотографии можно отправить боту отдельными сообщениями после формы — он свяжет их с этой сказкой. Зоны выбора фото выше опциональны.'
+      },
+      en: {
+        title: 'Create a story',
+        description: 'Fill in the fields — the bot will generate a personalised story and send it to the chat as a PDF book.',
+        child_name_label: 'Main character’s name *',
+        child_name_placeholder: 'For example, Arina',
+        main_photo_label: 'Main character photo (optional)',
+        main_photo_hint: 'Choose a picture or take a photo.',
+        second_character_label: 'Second character’s name (optional)',
+        second_character_placeholder: 'You may leave this empty',
+        second_photo_label: 'Second character photo (optional)',
+        second_photo_hint: 'Choose a picture or take a photo.',
+        educational_plot_label: 'Educational plot *',
+        educational_plot_options: {
+          kindness_help: 'Kindness and helping others',
+          power_of_friendship: 'Power of friendship',
+          honesty_trust: 'Honesty and trust',
+          accepting_differences: 'Accepting differences',
+          admitting_mistakes: 'Admitting mistakes',
+          patience_perseverance: 'Patience and perseverance',
+          care_for_nature: 'Caring for nature',
+          safety_caution: 'Safety and caution',
+          respect_parents_adults: 'Respect for parents and adults',
+          sharing: 'Sharing with others',
+          independence_responsibility: 'Independence and responsibility',
+          emotions_expression: 'Emotions and talking about them',
+          anti_bullying: 'Standing up to bullying',
+          value_of_work: 'Value of work',
+          tidiness_order: 'Tidiness and order',
+          gadgets_moderation: 'Moderation with gadgets',
+          gratitude: 'Gratitude',
+          imagination_creativity: 'Imagination and creativity'
+        },
+        narrative_style_label: 'Narrative style *',
+        narrative_style_options: {
+          gentle_meditative: 'Gentle, meditative',
+          adventurous: 'Adventurous',
+          mysterious: 'Mysterious',
+          humorous: 'Humorous',
+          lyrical: 'Lyrical'
+        },
+        setting_label: 'Setting (optional)',
+        setting_placeholder: 'Forest, sea, space city…',
+        language_label: 'Story language *',
+        language_options: {
+          ru: 'Russian',
+          en: 'English'
+        },
+        age_group_label: 'Child’s age *',
+        age_group_options: {
+          toddler: '1–3 years',
+          preschool: '4–6 years',
+          primary: '7–9 years',
+          preteen: '10–12 years'
+        },
+        submit: 'Create story',
+        note: 'You can send photos to the bot as separate messages after submitting the form — they will be linked to this story. The photo selection areas above are optional.'
       }
-    }
-
-    const narrativeSelect = form.narrative_style;
-    for (const option of narrativeSelect.options) {
-      const key = option.value;
-      if (t.narrative_style_options[key]) {
-        option.textContent = t.narrative_style_options[key];
-      }
-    }
-
-    const languageSelect = form.language;
-    for (const option of languageSelect.options) {
-      const key = option.value;
-      if (t.language_options[key]) {
-        option.textContent = t.language_options[key];
-      }
-    }
-
-    const ageSelect = form.age_group;
-    for (const option of ageSelect.options) {
-      const key = option.value;
-      if (t.age_group_options[key]) {
-        option.textContent = t.age_group_options[key];
-      }
-    }
-
-    submitBtn.textContent = t.submit;
-    document.getElementById('note').textContent = t.note;
-
-    // автоматически синхронизируем язык сказки с выбранным языком интерфейса
-    if (lang === 'ru' || lang === 'en') {
-      form.language.value = lang;
-    }
-  }
-
-  const langButtons = document.querySelectorAll('.lang-btn');
-  langButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const lang = btn.dataset.lang;
-      if (lang === currentLang) return;
-      langButtons.forEach((b) => {
-        b.classList.toggle('lang-btn--active', b === btn);
-      });
-      applyTranslations(lang);
-    });
-  });
-
-  applyTranslations('ru');
-
-  // === отправка формы ===
-  form.addEventListener('submit', function (event) {
-    event.preventDefault();
-    submitBtn.disabled = true;
-
-    const mainPhotoFile = form.main_character_photo.files[0] || null;
-    const secondPhotoFile = form.second_character_photo.files[0] || null;
-
-    // Базовый объект, который потом в n8n превращается в llm_input
-    const data = {
-      // ключевые поля для LLM / n8n
-      child_name: form.child_name.value.trim(),
-      second_character_name: form.second_character_name.value.trim() || null,
-      educational_plot: form.educational_plot.value,
-      narrative_style: form.narrative_style.value,
-      setting: form.setting.value.trim() || null,
-      language: form.language.value,     // ru / en — используется LLM
-      age_group: form.age_group.value,   // toddler / preschool / primary / preteen
-
-      // служебные поля
-      ui_language: currentLang,          // язык интерфейса мини-аппа
-      source: tg ? 'telegram_webapp' : 'web_form', // откуда пришёл запрос
-      tariff_code: 'single_story',       // тариф "одна сказка"
-
-      // информация о наличии фото (для дальнейшей логики в n8n)
-      main_photo_provided: !!mainPhotoFile,
-      second_photo_provided: !!secondPhotoFile,
-      main_character_photo_name: mainPhotoFile ? mainPhotoFile.name : null,
-      second_character_photo_name: secondPhotoFile ? secondPhotoFile.name : null
     };
 
-    try {
-      if (tg) {
-        // режим Telegram Mini App: отправляем данные в бота
-        tg.sendData(JSON.stringify(data));
-        tg.close();
-      } else {
-        // режим сайта (Tilda или просто браузер):
-        // здесь вместо alert лучше вызвать ваш webhook n8n
-        fetch('https://YOUR-N8N-DOMAIN/webhook/story-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        })
-          .then((res) => {
-            if (!res.ok) throw new Error('Request failed');
-            return res.json().catch(() => ({}));
-          })
-          .then(() => {
-            alert('Спасибо! Сказка будет сгенерирована и отправлена в ближайшее время.');
-          })
-          .catch((err) => {
-            console.error(err);
-            alert('Произошла ошибка при отправке данных. Попробуйте ещё раз.');
-          })
-          .finally(() => {
-            submitBtn.disabled = false;
-          });
-        return;
+    let currentLang = 'ru';
+
+    function applyTranslations(lang) {
+      const t = translations[lang];
+      currentLang = lang;
+      document.documentElement.lang = lang;
+
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('description').textContent = t.description;
+
+      document.getElementById('label_child_name').textContent = t.child_name_label;
+      document.getElementById('label_main_photo').textContent = t.main_photo_label;
+      document.getElementById('hint_main_photo').textContent = t.main_photo_hint;
+      document.getElementById('label_second_character_name').textContent = t.second_character_label;
+      document.getElementById('hint_second_photo').textContent = t.second_photo_hint;
+      document.getElementById('label_second_photo').textContent = t.second_photo_label;
+      document.getElementById('label_educational_plot').textContent = t.educational_plot_label;
+      document.getElementById('label_narrative_style').textContent = t.narrative_style_label;
+      document.getElementById('label_setting').textContent = t.setting_label;
+      document.getElementById('label_language').textContent = t.language_label;
+      document.getElementById('label_age_group').textContent = t.age_group_label;
+
+      form.child_name.placeholder = t.child_name_placeholder;
+      form.second_character_name.placeholder = t.second_character_placeholder;
+      form.setting.placeholder = t.setting_placeholder;
+
+      const educationalSelect = form.educational_plot;
+      for (const option of educationalSelect.options) {
+        const key = option.value;
+        if (t.educational_plot_options[key]) {
+          option.textContent = t.educational_plot_options[key];
+        }
       }
-    } catch (e) {
-      console.error(e);
-      submitBtn.disabled = false;
+
+      const narrativeSelect = form.narrative_style;
+      for (const option of narrativeSelect.options) {
+        const key = option.value;
+        if (t.narrative_style_options[key]) {
+          option.textContent = t.narrative_style_options[key];
+        }
+      }
+
+      const languageSelect = form.language;
+      for (const option of languageSelect.options) {
+        const key = option.value;
+        if (t.language_options[key]) {
+          option.textContent = t.language_options[key];
+        }
+      }
+
+      const ageSelect = form.age_group;
+      for (const option of ageSelect.options) {
+        const key = option.value;
+        if (t.age_group_options[key]) {
+          option.textContent = t.age_group_options[key];
+        }
+      }
+
+      submitBtn.textContent = t.submit;
+      document.getElementById('note').textContent = t.note;
+
+      if (lang === 'ru' || lang === 'en') {
+        form.language.value = lang;
+      }
     }
-  });
-</script>
+
+    const langButtons = document.querySelectorAll('.lang-btn');
+    langButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        if (lang === currentLang) return;
+        langButtons.forEach((b) => {
+          b.classList.toggle('lang-btn--active', b === btn);
+        });
+        applyTranslations(lang);
+      });
+    });
+
+    applyTranslations('ru');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      submitBtn.disabled = true;
+
+      const data = {
+        child_name: form.child_name.value.trim(),
+        second_character_name: form.second_character_name.value.trim() || null,
+        educational_plot: form.educational_plot.value,
+        narrative_style: form.narrative_style.value,
+        setting: form.setting.value.trim() || null,
+        language: form.language.value,
+        age_group: form.age_group.value,
+        ui_language: currentLang,
+        main_character_photo_name: form.main_character_photo.files[0]?.name || null,
+        second_character_photo_name: form.second_character_photo.files[0]?.name || null
+      };
+
+      try {
+        if (tg) {
+          tg.sendData(JSON.stringify(data));
+          tg.close();
+        } else {
+          // тестовый режим в браузере
+          alert('Отправлены данные:\n' + JSON.stringify(data, null, 2));
+          submitBtn.disabled = false;
+        }
+      } catch (e) {
+        console.error(e);
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
