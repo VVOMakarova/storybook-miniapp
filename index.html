@@ -339,12 +339,17 @@
   </main>
 
   <script>
-    const tg = window.Telegram.WebApp || null;
+    const tg = window.Telegram?.WebApp || null;
+    console.log('Telegram object: ', window.Telegram);
+    console.log('WebApp object: ', tg);
+    console.log('initData: ', tg?.initData);
+    console.log('initDataUnsafe: ', tg?.initDataUnsafe);
+    
     if (tg) {
       tg.ready();
       tg.expand();
     }
-
+    
     const form = document.getElementById('storyForm');
     const submitBtn = document.getElementById('submitBtn');
 
@@ -548,6 +553,7 @@
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       submitBtn.disabled = true;
+      console.log('Form submit clicked');
 
       const data = {
         child_name: form.child_name.value.trim(),
@@ -561,22 +567,27 @@
         main_character_photo_name: form.main_character_photo.files[0]?.name || null,
         second_character_photo_name: form.second_character_photo.files[0]?.name || null
       };
+      console.log('Collected form data:', data);
 
       const tg = window.Telegram?.WebApp || null;
-const isTelegramWebApp = !!(tg && typeof tg.initData === 'string' && tg.initData.length > 0);
+      const isTelegramWebApp = !!(tg && typeof tg.initData === 'string' && tg.initData.length > 0);
+      console.log('Is Telegram WebApp: ', isTelegramWebApp);
+      console.log('WebApp object before sendData: ', tg);
 
-try {
-  if (isTelegramWebApp) {
-    tg.sendData(JSON.stringify(data));
-    setTimeout(() => tg.close(), 250);
-  } else {
-    alert('Тестовый режим (не Telegram WebApp):\n' + JSON.stringify(data, null, 2));
-    submitBtn.disabled = false;
-  }
-} catch (e) {
-  console.error(e);
-  submitBtn.disabled = false;
-}
+      try {
+        if (isTelegramWebApp) {
+          console.log('Sending data to Telegram WebApp');
+          tg.sendData(JSON.stringify(data));
+          console.log('Data sent, will close WebApp in 250ms');
+          setTimeout(() => tg.close(), 250);
+        } else {
+          alert('Тестовый режим (не Telegram WebApp):\n' + JSON.stringify(data, null, 2));
+          submitBtn.disabled = false;
+        }
+      } catch (e) {
+        console.error(e);
+        submitBtn.disabled = false;
+      }
     });
   </script>
 </body>
