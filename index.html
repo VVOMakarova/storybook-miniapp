@@ -7,292 +7,337 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-    :root {
+    :root{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #0f172a;
+      color:#0f172a;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 16px;
-      min-height: 100vh;
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      padding:16px;
+      min-height:100vh;
       background: radial-gradient(circle at 10% 20%, #c2f0ff 0, #9de1ff 25%, #77cffc 60%, #5ab8f5 100%);
-      position: relative;
-      overflow-x: hidden;
+      position:relative;
+      overflow-x:hidden;
     }
 
     /* декоративные пузыри на фоне (не анимированные) */
-    .decor-bubbles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
+    .decor-bubbles{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
     }
-    .decor-bubble {
-      position: absolute;
-      border-radius: 50%;
+    .decor-bubble{
+      position:absolute;
+      border-radius:50%;
       background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0));
-      border: 1px solid rgba(255,255,255,0.9);
-      opacity: 0.55;
+      border:1px solid rgba(255,255,255,0.9);
+      opacity:0.55;
       filter: blur(0.5px);
     }
-    .decor-bubble--1 { width: 140px; height: 140px; top: 6%;  left: 6%; }
-    .decor-bubble--2 { width: 110px; height: 110px; top: 18%; right: 10%; }
-    .decor-bubble--3 { width: 90px;  height: 90px;  bottom: 18%; left: 15%; }
-    .decor-bubble--4 { width: 160px; height: 160px; bottom: -30px; right: -10px; opacity: 0.4; }
-    .decor-bubble--5 { width: 70px;  height: 70px;  top: 50%; left: 55%; opacity: 0.45; }
+    .decor-bubble--1{ width:140px;height:140px;top:6%;left:6%; }
+    .decor-bubble--2{ width:110px;height:110px;top:18%;right:10%; }
+    .decor-bubble--3{ width:90px;height:90px;bottom:18%;left:15%; }
+    .decor-bubble--4{ width:160px;height:160px;bottom:-30px;right:-10px;opacity:0.4; }
+    .decor-bubble--5{ width:70px;height:70px;top:50%;left:55%;opacity:0.45; }
 
-    .container { max-width: 480px; margin: 0 auto; }
+    .container{ max-width:480px; margin:0 auto; }
 
-    .bubble-card {
+    .bubble-card{
       background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.95), rgba(255,255,255,0.78));
-      border-radius: 32px;
-      padding: 18px 16px 20px;
+      border-radius:32px;
+      padding:18px 16px 20px;
       box-shadow:
         0 18px 40px rgba(15,23,42,0.35),
         0 0 0 1px rgba(255,255,255,0.7);
       backdrop-filter: blur(12px);
     }
 
-    .hero {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 8px;
+    .lang-switch{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      margin-bottom:10px;
     }
-    .hero-illustration {
-      width: 84px;
-      height: 84px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 20%, #ffe0f2 0, #ffb6dd 45%, #ff9fd6 80%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow:
-        0 8px 18px rgba(244,114,182,0.5),
-        0 0 0 3px rgba(255,255,255,0.8);
-      overflow: hidden;
-    }
-    .hero-emoji {
-      font-size: 40px;
-      line-height: 1;
-      transform: translateY(2px);
-    }
-    .hero-text { flex: 1; min-width: 0; }
-    h1 { font-size: 20px; margin: 0 0 4px; }
-    p.description { font-size: 13px; margin: 0; color: #4b5563; }
-
-    .lang-switch {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .lang-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.8);
+    .lang-btn{
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.8);
       background: rgba(255,255,255,0.9);
-      padding: 4px 12px;
-      font-size: 11px;
-      cursor: pointer;
-      box-shadow: 0 3px 6px rgba(15,23,42,0.15);
+      padding:4px 12px;
+      font-size:11px;
+      cursor:pointer;
+      box-shadow:0 3px 6px rgba(15,23,42,0.15);
       transition: all 0.18s ease;
-      color: #000000;
+      color:#000;
     }
-    .lang-btn--active {
+    .lang-btn--active{
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: #000000;
+      color:#000;
       border-color: transparent;
       box-shadow:
         0 4px 10px rgba(79,70,229,0.55),
         0 0 0 1px rgba(255,255,255,0.8) inset;
     }
 
-    form { margin-top: 10px; }
+    .hero{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:8px;
+    }
+    .hero-illustration{
+      width:84px;height:84px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 20%, #ffe0f2 0, #ffb6dd 45%, #ff9fd6 80%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:
+        0 8px 18px rgba(244,114,182,0.5),
+        0 0 0 3px rgba(255,255,255,0.8);
+      overflow:hidden;
+    }
+    .hero-emoji{
+      font-size:40px;
+      line-height:1;
+      transform: translateY(2px);
+    }
+    .hero-text{ flex:1; min-width:0; }
+    h1{ font-size:20px; margin:0 0 4px; }
+    p.description{ font-size:13px; margin:0; color:#4b5563; }
 
-    .field {
-      margin-bottom: 12px;
-      padding: 8px 10px 10px;
-      border-radius: 18px;
+    form{ margin-top:10px; }
+
+    .field{
+      margin-bottom:12px;
+      padding:8px 10px 10px;
+      border-radius:18px;
       background: radial-gradient(circle at 15% 10%, rgba(255,255,255,0.98), rgba(255,255,255,0.78));
       box-shadow:
         0 6px 12px rgba(15,23,42,0.12),
         0 0 0 1px rgba(255,255,255,0.85);
     }
-
-    label {
-      display: block;
-      font-size: 12px;
-      margin-bottom: 4px;
-      color: #334155;
+    label{
+      display:block;
+      font-size:12px;
+      margin-bottom:4px;
+      color:#334155;
+    }
+    .field-hint{
+      display:block;
+      margin-top:4px;
+      font-size:11px;
+      color:#6b7280;
+    }
+    .field-subtitle{
+      display:block;
+      margin:8px 0 6px;
+      font-size:11px;
+      color:#475569;
+      font-weight:600;
     }
 
-    .field-hint {
-      display: block;
-      margin-top: 4px;
-      font-size: 11px;
-      color: #6b7280;
-    }
-
-    .field-subtitle {
-      display: block;
-      margin: 6px 0 6px;
-      font-size: 11px;
-      color: #475569;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 7px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.7);
-      font-size: 13px;
-      outline: none;
+    input, select, textarea{
+      width:100%;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.7);
+      font-size:13px;
+      outline:none;
       background: rgba(255,255,255,0.9);
       box-shadow: 0 2px 4px rgba(15,23,42,0.05) inset;
     }
-    textarea { border-radius: 18px; resize: vertical; min-height: 60px; }
-    input::placeholder, textarea::placeholder { color: #9ca3af; }
-    input:focus, select:focus, textarea:focus {
-      border-color: #6366f1;
+    textarea{
+      border-radius:18px;
+      resize:vertical;
+      min-height:60px;
+    }
+    input::placeholder, textarea::placeholder{ color:#9ca3af; }
+    input:focus, select:focus, textarea:focus{
+      border-color:#6366f1;
       box-shadow:
         0 0 0 1px rgba(129,140,248,0.6),
         0 0 0 4px rgba(129,140,248,0.26);
-      background: #ffffff;
+      background:#fff;
     }
 
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
+    .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .grid-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+    @media (max-width:390px){
+      .grid-2,.grid-3{ grid-template-columns:1fr; }
     }
-    .chip {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.85);
+
+    .hidden{ display:none !important; }
+
+    /* квадратные кнопки-режимы */
+    .mode-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:10px;
+      margin-top:6px;
+    }
+    .mode-grid--2{
+      grid-template-columns:repeat(2, 1fr);
+    }
+    .mode-tile{
+      border-radius:18px;
+      border:1px solid rgba(148,163,184,0.85);
       background: rgba(255,255,255,0.92);
-      padding: 6px 10px;
-      font-size: 12px;
-      cursor: pointer;
-      color: #0f172a;
-      box-shadow: 0 3px 6px rgba(15,23,42,0.10);
-      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
-      text-align: left;
-    }
-    .chip:active { transform: translateY(1px); filter: brightness(0.99); }
-    .chip--active {
-      background: linear-gradient(135deg, rgba(99,102,241,0.95), rgba(139,92,246,0.95));
-      border-color: transparent;
-      color: #0b1020;
-      box-shadow: 0 6px 14px rgba(79,70,229,0.35), 0 0 0 1px rgba(255,255,255,0.9) inset;
-    }
-    .chip small { display: block; font-size: 10px; color: rgba(15,23,42,0.72); }
-    .chip--active small { color: rgba(15,23,42,0.82); }
-
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-    @media (max-width: 390px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    }
-
-    .hidden { display: none !important; }
-
-    /* --- ИЗМЕНЕНИЕ 1: квадратные кнопки внешности главного героя --- */
-    .mode-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 6px;
-    }
-    .mode-tile {
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.85);
-      background: rgba(255,255,255,0.92);
-      padding: 10px;
-      cursor: pointer;
-      color: #0f172a;
+      padding:10px;
+      cursor:pointer;
+      color:#0f172a;
       box-shadow: 0 6px 12px rgba(15,23,42,0.10);
       transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      text-align: left;
-
-      aspect-ratio: 1 / 1; /* делает их "квадратиками" */
-      min-height: 78px;    /* запас на очень маленьких экранах */
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      text-align:left;
+      aspect-ratio:1/1;
+      min-height:78px;
     }
-    .mode-tile:active { transform: translateY(1px); filter: brightness(0.99); }
-    .mode-tile--active {
+    .mode-tile:active{ transform:translateY(1px); filter:brightness(0.99); }
+    .mode-tile--active{
       background: linear-gradient(135deg, rgba(99,102,241,0.95), rgba(139,92,246,0.95));
       border-color: transparent;
-      color: #0b1020;
+      color:#0b1020;
       box-shadow: 0 10px 18px rgba(79,70,229,0.30), 0 0 0 1px rgba(255,255,255,0.9) inset;
     }
-    .mode-tile span { font-size: 12px; font-weight: 600; line-height: 1.15; }
-    .mode-tile small { font-size: 10px; color: rgba(15,23,42,0.72); line-height: 1.2; }
-    .mode-tile--active small { color: rgba(15,23,42,0.82); }
-    @media (max-width: 390px) {
-      .mode-grid { grid-template-columns: 1fr; }
-      .mode-tile { aspect-ratio: auto; min-height: 64px; }
+    .mode-tile span{ font-size:12px; font-weight:700; line-height:1.15; }
+    .mode-tile small{ font-size:10px; color: rgba(15,23,42,0.72); line-height:1.2; }
+    .mode-tile--active small{ color: rgba(15,23,42,0.82); }
+    @media (max-width:390px){
+      .mode-grid{ grid-template-columns:1fr; }
+      .mode-grid--2{ grid-template-columns:1fr; }
+      .mode-tile{ aspect-ratio:auto; min-height:64px; }
     }
 
-    /* --- ИЗМЕНЕНИЕ 2: выделение блока параметров внешности цветом --- */
-    .attention-block {
-      margin-top: 10px;
-      padding: 12px 12px 12px;
-      border-radius: 18px;
+    /* выделенная цветом зона */
+    .attention-block{
+      margin-top:10px;
+      padding:12px;
+      border-radius:18px;
       background: radial-gradient(circle at 15% 10%, rgba(255,255,255,0.98), rgba(221,214,254,0.55));
-      border: 1px solid rgba(139,92,246,0.35);
+      border:1px solid rgba(139,92,246,0.35);
       box-shadow:
         0 10px 18px rgba(79,70,229,0.12),
         0 0 0 1px rgba(255,255,255,0.85) inset;
     }
-    .attention-title {
-      display: block;
-      margin: 0 0 8px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #4338ca;
-      letter-spacing: 0.2px;
+    .attention-title{
+      display:block;
+      margin:0 0 8px;
+      font-size:11px;
+      font-weight:800;
+      color:#4338ca;
+      letter-spacing:0.2px;
     }
 
-    button {
-      width: 100%;
-      padding: 11px 16px;
-      border-radius: 999px;
-      border: none;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
+    /* карточки-пресеты (кликабельные) */
+    .preset-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width:390px){
+      .preset-grid{ grid-template-columns:1fr; }
+    }
+    .preset-btn{
+      border-radius:18px;
+      border:1px solid rgba(148,163,184,0.85);
+      background: rgba(255,255,255,0.92);
+      padding:10px 10px 9px;
+      cursor:pointer;
+      color:#0f172a;
+      box-shadow: 0 6px 12px rgba(15,23,42,0.10);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+      text-align:left;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .preset-btn:active{ transform:translateY(1px); filter:brightness(0.99); }
+    .preset-btn--active{
+      background: linear-gradient(135deg, rgba(99,102,241,0.95), rgba(139,92,246,0.95));
+      border-color:transparent;
+      box-shadow: 0 10px 18px rgba(79,70,229,0.25), 0 0 0 1px rgba(255,255,255,0.9) inset;
+    }
+    .preset-btn b{
+      font-size:12px;
+      line-height:1.15;
+      color:#0b1020;
+    }
+    .preset-btn p{
+      margin:0;
+      font-size:10px;
+      line-height:1.2;
+      color: rgba(15,23,42,0.72);
+    }
+    .preset-btn--active b{ color:#0b1020; }
+    .preset-btn--active p{ color: rgba(15,23,42,0.82); }
+
+    /* небольшие «чипы» (для внутренних выборов) */
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:6px;
+    }
+    .chip{
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.85);
+      background: rgba(255,255,255,0.92);
+      padding:6px 10px;
+      font-size:12px;
+      cursor:pointer;
+      color:#0f172a;
+      box-shadow: 0 3px 6px rgba(15,23,42,0.10);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+      text-align:left;
+      white-space:nowrap;
+    }
+    .chip:active{ transform:translateY(1px); filter:brightness(0.99); }
+    .chip--active{
+      background: linear-gradient(135deg, rgba(99,102,241,0.95), rgba(139,92,246,0.95));
+      border-color:transparent;
+      box-shadow: 0 6px 14px rgba(79,70,229,0.25), 0 0 0 1px rgba(255,255,255,0.9) inset;
+    }
+
+    button[type="submit"]{
+      width:100%;
+      padding:11px 16px;
+      border-radius:999px;
+      border:none;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
       background: radial-gradient(circle at 20% 0, #a5b4fc, #6366f1);
-      color: #ffffff;
+      color:#fff;
       box-shadow:
         0 10px 20px rgba(79,70,229,0.55),
         0 0 0 1px rgba(255,255,255,0.9) inset;
-      margin-top: 4px;
+      margin-top:4px;
       transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
     }
-    button:active {
-      transform: translateY(1px);
+    button[type="submit"]:active{
+      transform:translateY(1px);
       box-shadow:
         0 6px 14px rgba(79,70,229,0.55),
         0 0 0 1px rgba(255,255,255,0.9) inset;
-      filter: brightness(0.98);
+      filter:brightness(0.98);
     }
-    button:disabled {
-      opacity: 0.7;
-      cursor: default;
+    button[type="submit"]:disabled{
+      opacity:0.7;
+      cursor:default;
       box-shadow:
         0 4px 8px rgba(148,163,184,0.5),
         0 0 0 1px rgba(255,255,255,0.9) inset;
     }
 
-    .note {
-      font-size: 11px;
-      color: #475569;
-      margin-top: 8px;
-      text-align: center;
+    .note{
+      font-size:11px;
+      color:#475569;
+      margin-top:8px;
+      text-align:center;
     }
   </style>
 </head>
@@ -309,8 +354,8 @@
   <main class="container">
     <div class="bubble-card">
       <div class="lang-switch">
-        <button type="button" class="lang-btn lang-btn--active" data-lang="ru">RU</button>
-        <button type="button" class="lang-btn" data-lang="en">EN</button>
+        <button type="button" class="lang-btn" id="btnLangRu" data-lang="ru">RU</button>
+        <button type="button" class="lang-btn" id="btnLangEn" data-lang="en">EN</button>
       </div>
 
       <div class="hero">
@@ -318,8 +363,8 @@
           <span class="hero-emoji">📖</span>
         </div>
         <div class="hero-text">
-          <h1 id="title">Создать сказку</h1>
-          <p class="description" id="description">
+          <h1 id="title" data-i18n="title">Создать сказку</h1>
+          <p class="description" id="description" data-i18n="description">
             Заполните параметры — бот сгенерирует персональную сказку и отправит её в чат в виде PDF-книги.
           </p>
         </div>
@@ -328,435 +373,456 @@
       <form id="storyForm">
         <!-- П.1 -->
         <div class="field">
-          <label for="main_hero_name" id="label_main_hero_name">Имя главного героя *</label>
-          <input id="main_hero_name" name="main_hero_name" required placeholder="Например, Арина" />
+          <label for="main_hero_name" id="label_main_hero_name" data-i18n="label_main_hero_name">Имя главного героя *</label>
+          <input id="main_hero_name" name="main_hero_name" required data-i18n-placeholder="ph_main_hero_name" placeholder="Например, Арина" />
         </div>
 
-        <!-- П.2: режим внешности главного героя -->
+        <!-- П.2 -->
         <div class="field">
-          <label id="label_main_hero_appearance_mode">Внешность главного героя *</label>
+          <label id="label_main_hero_mode" data-i18n="label_main_hero_mode">Внешность главного героя *</label>
 
-          <!-- квадратные кнопки в ряд -->
-          <div class="mode-grid" id="mainHeroModeChips">
-            <button type="button" class="mode-tile mode-tile--active" data-value="auto" id="chip_main_auto">
-              <span id="chip_main_auto_title">Предложить внешность</span>
-              <small id="chip_main_auto_desc">Автогенерация без параметров</small>
+          <div class="mode-grid" id="mainHeroModeTiles">
+            <button type="button" class="mode-tile mode-tile--active" data-value="auto">
+              <span data-i18n="main_mode_auto_title">Предложить внешность</span>
+              <small data-i18n="main_mode_auto_desc">Автогенерация без параметров</small>
             </button>
 
-            <button type="button" class="mode-tile" data-value="select" id="chip_main_select">
-              <span id="chip_main_select_title">Выбрать внешность</span>
-              <small id="chip_main_select_desc">Параметры: кожа, глаза, волосы…</small>
+            <button type="button" class="mode-tile" data-value="select">
+              <span data-i18n="main_mode_select_title">Выбрать внешность</span>
+              <small data-i18n="main_mode_select_desc">Параметры: кожа, глаза, волосы…</small>
             </button>
 
-            <button type="button" class="mode-tile" data-value="photo" id="chip_main_photo">
-              <span id="chip_main_photo_title">Загрузить фото</span>
-              <small id="chip_main_photo_desc">Фото отправите в чат после формы</small>
+            <button type="button" class="mode-tile" data-value="photo">
+              <span data-i18n="main_mode_photo_title">Загрузить фото</span>
+              <small data-i18n="main_mode_photo_desc">Фото отправите в чат после формы</small>
             </button>
           </div>
 
           <input type="hidden" id="main_hero_appearance_mode" name="main_hero_appearance_mode" value="auto" />
 
-          <!-- выделенный блок параметров внешности -->
           <div id="mainHeroAppearanceBlock" class="attention-block hidden">
-            <span class="attention-title" id="subtitle_main_appearance">Параметры внешности (для узнаваемости)</span>
+            <span class="attention-title" data-i18n="main_appearance_title">Параметры внешности (для узнаваемости)</span>
 
             <div class="grid-2">
               <div>
-                <label for="main_age_years" id="label_main_age_years">Возраст (цифрой)</label>
-                <input id="main_age_years" name="main_age_years" inputmode="numeric" placeholder="Например, 4" />
+                <label for="main_age_years" data-i18n="label_main_age_years">Возраст (цифрой)</label>
+                <input id="main_age_years" name="main_age_years" inputmode="numeric" data-i18n-placeholder="ph_main_age_years" placeholder="Например, 4" />
               </div>
               <div>
-                <label for="main_gender" id="label_main_gender">Пол</label>
+                <label for="main_gender" data-i18n="label_main_gender">Пол</label>
                 <select id="main_gender" name="main_gender">
-                  <option value="unspecified" selected id="opt_gender_unspecified">Не указывать</option>
-                  <option value="girl" id="opt_gender_girl">Девочка</option>
-                  <option value="boy" id="opt_gender_boy">Мальчик</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="girl" data-i18n="opt_girl">Девочка</option>
+                  <option value="boy" data-i18n="opt_boy">Мальчик</option>
                 </select>
               </div>
             </div>
 
             <div class="grid-2">
               <div>
-                <label for="main_skin_tone" id="label_main_skin_tone">Тон кожи *</label>
+                <label for="main_skin_tone" data-i18n="label_main_skin_tone">Тон кожи *</label>
                 <select id="main_skin_tone" name="main_skin_tone">
-                  <option value="" selected disabled id="opt_pick">Выберите…</option>
-                  <option value="very_light" id="opt_skin_very_light">Очень светлый</option>
-                  <option value="light" id="opt_skin_light">Светлый</option>
-                  <option value="medium" id="opt_skin_medium">Средний</option>
-                  <option value="tan" id="opt_skin_tan">Смуглый</option>
-                  <option value="dark" id="opt_skin_dark">Тёмный</option>
+                  <option value="" data-i18n="opt_pick" selected disabled>Выберите…</option>
+                  <option value="very_light" data-i18n="opt_skin_very_light">Очень светлый</option>
+                  <option value="light" data-i18n="opt_skin_light">Светлый</option>
+                  <option value="medium" data-i18n="opt_skin_medium">Средний</option>
+                  <option value="tan" data-i18n="opt_skin_tan">Смуглый</option>
+                  <option value="dark" data-i18n="opt_skin_dark">Тёмный</option>
                 </select>
               </div>
               <div>
-                <label for="main_face_shape" id="label_main_face_shape">Форма лица</label>
+                <label for="main_face_shape" data-i18n="label_main_face_shape">Форма лица</label>
                 <select id="main_face_shape" name="main_face_shape">
-                  <option value="unspecified" selected id="opt_face_unspecified">Не указывать</option>
-                  <option value="round" id="opt_face_round">Круглое</option>
-                  <option value="oval" id="opt_face_oval">Овальное</option>
-                  <option value="long" id="opt_face_long">Удлинённое</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="round" data-i18n="opt_face_round">Круглое</option>
+                  <option value="oval" data-i18n="opt_face_oval">Овальное</option>
+                  <option value="long" data-i18n="opt_face_long">Удлинённое</option>
                 </select>
               </div>
             </div>
 
             <div>
-              <label for="main_face_accent" id="label_main_face_accent">Акцент лица (опционально)</label>
-              <input id="main_face_accent" name="main_face_accent" maxlength="120" placeholder="Например, веснушки" />
-              <small class="field-hint" id="hint_main_face_accent">Короткая деталь, которую важно сохранить.</small>
+              <label for="main_face_accent" data-i18n="label_main_face_accent">Акцент лица (опционально)</label>
+              <input id="main_face_accent" name="main_face_accent" maxlength="120" data-i18n-placeholder="ph_main_face_accent" placeholder="Например, веснушки" />
+              <small class="field-hint" data-i18n="hint_main_face_accent">Короткая деталь, которую важно сохранить.</small>
             </div>
 
-            <span class="field-subtitle" id="subtitle_main_eyes">Глаза</span>
+            <span class="field-subtitle" data-i18n="sub_eyes">Глаза</span>
             <div class="grid-3">
               <div>
-                <label for="main_eyes_color" id="label_main_eyes_color">Цвет *</label>
+                <label for="main_eyes_color" data-i18n="label_main_eyes_color">Цвет *</label>
                 <select id="main_eyes_color" name="main_eyes_color">
-                  <option value="" selected disabled>Выберите…</option>
-                  <option value="brown" id="opt_eyes_brown">Карие</option>
-                  <option value="blue" id="opt_eyes_blue">Голубые</option>
-                  <option value="gray" id="opt_eyes_gray">Серые</option>
-                  <option value="green" id="opt_eyes_green">Зелёные</option>
-                  <option value="hazel" id="opt_eyes_hazel">Ореховые</option>
-                  <option value="unspecified" id="opt_eyes_unspecified">Не указывать</option>
+                  <option value="" data-i18n="opt_pick" selected disabled>Выберите…</option>
+                  <option value="brown" data-i18n="opt_eyes_brown">Карие</option>
+                  <option value="blue" data-i18n="opt_eyes_blue">Голубые</option>
+                  <option value="gray" data-i18n="opt_eyes_gray">Серые</option>
+                  <option value="green" data-i18n="opt_eyes_green">Зелёные</option>
+                  <option value="hazel" data-i18n="opt_eyes_hazel">Ореховые</option>
+                  <option value="unspecified" data-i18n="opt_unspecified">Не указывать</option>
                 </select>
               </div>
               <div>
-                <label for="main_eyes_shape" id="label_main_eyes_shape">Форма</label>
+                <label for="main_eyes_shape" data-i18n="label_main_eyes_shape">Форма</label>
                 <select id="main_eyes_shape" name="main_eyes_shape">
-                  <option value="unspecified" selected id="opt_eyes_shape_unspecified">Не указывать</option>
-                  <option value="round" id="opt_eyes_shape_round">Круглые</option>
-                  <option value="almond" id="opt_eyes_shape_almond">Миндaлевидные</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="round" data-i18n="opt_eyes_shape_round">Круглые</option>
+                  <option value="almond" data-i18n="opt_eyes_shape_almond">Миндaлевидные</option>
                 </select>
               </div>
               <div>
-                <label for="main_eyes_size" id="label_main_eyes_size">Размер</label>
+                <label for="main_eyes_size" data-i18n="label_main_eyes_size">Размер</label>
                 <select id="main_eyes_size" name="main_eyes_size">
-                  <option value="unspecified" selected id="opt_eyes_size_unspecified">Не указывать</option>
-                  <option value="small" id="opt_eyes_size_small">Небольшие</option>
-                  <option value="medium" id="opt_eyes_size_medium">Средние</option>
-                  <option value="large" id="opt_eyes_size_large">Крупные</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="small" data-i18n="opt_size_small">Небольшие</option>
+                  <option value="medium" data-i18n="opt_size_medium">Средние</option>
+                  <option value="large" data-i18n="opt_size_large">Крупные</option>
                 </select>
               </div>
             </div>
 
-            <span class="field-subtitle" id="subtitle_main_hair">Волосы</span>
+            <span class="field-subtitle" data-i18n="sub_hair">Волосы</span>
             <div class="grid-3">
               <div>
-                <label for="main_hair_color" id="label_main_hair_color">Цвет *</label>
+                <label for="main_hair_color" data-i18n="label_main_hair_color">Цвет *</label>
                 <select id="main_hair_color" name="main_hair_color">
-                  <option value="" selected disabled>Выберите…</option>
-                  <option value="blond" id="opt_hair_blond">Блонд</option>
-                  <option value="light_brown" id="opt_hair_light_brown">Русые</option>
-                  <option value="chestnut" id="opt_hair_chestnut">Каштановые</option>
-                  <option value="dark" id="opt_hair_dark">Тёмные</option>
-                  <option value="red" id="opt_hair_red">Рыжие</option>
-                  <option value="black" id="opt_hair_black">Чёрные</option>
-                  <option value="unspecified" id="opt_hair_unspecified">Не указывать</option>
+                  <option value="" data-i18n="opt_pick" selected disabled>Выберите…</option>
+                  <option value="blond" data-i18n="opt_hair_blond">Блонд</option>
+                  <option value="light_brown" data-i18n="opt_hair_light_brown">Русые</option>
+                  <option value="chestnut" data-i18n="opt_hair_chestnut">Каштановые</option>
+                  <option value="dark" data-i18n="opt_hair_dark">Тёмные</option>
+                  <option value="red" data-i18n="opt_hair_red">Рыжие</option>
+                  <option value="black" data-i18n="opt_hair_black">Чёрные</option>
+                  <option value="unspecified" data-i18n="opt_unspecified">Не указывать</option>
                 </select>
               </div>
               <div>
-                <label for="main_hair_length" id="label_main_hair_length">Длина *</label>
+                <label for="main_hair_length" data-i18n="label_main_hair_length">Длина *</label>
                 <select id="main_hair_length" name="main_hair_length">
-                  <option value="" selected disabled>Выберите…</option>
-                  <option value="very_short" id="opt_hair_len_very_short">Очень короткие</option>
-                  <option value="short" id="opt_hair_len_short">Короткие</option>
-                  <option value="shoulder" id="opt_hair_len_shoulder">До плеч</option>
-                  <option value="long" id="opt_hair_len_long">Длинные</option>
-                  <option value="unspecified" id="opt_hair_len_unspecified">Не указывать</option>
+                  <option value="" data-i18n="opt_pick" selected disabled>Выберите…</option>
+                  <option value="very_short" data-i18n="opt_len_very_short">Очень короткие</option>
+                  <option value="short" data-i18n="opt_len_short">Короткие</option>
+                  <option value="shoulder" data-i18n="opt_len_shoulder">До плеч</option>
+                  <option value="long" data-i18n="opt_len_long">Длинные</option>
+                  <option value="unspecified" data-i18n="opt_unspecified">Не указывать</option>
                 </select>
               </div>
               <div>
-                <label for="main_hair_type" id="label_main_hair_type">Тип *</label>
+                <label for="main_hair_type" data-i18n="label_main_hair_type">Тип *</label>
                 <select id="main_hair_type" name="main_hair_type">
-                  <option value="" selected disabled>Выберите…</option>
-                  <option value="straight" id="opt_hair_type_straight">Прямые</option>
-                  <option value="wavy" id="opt_hair_type_wavy">Волнистые</option>
-                  <option value="curly" id="opt_hair_type_curly">Кудрявые</option>
-                  <option value="unspecified" id="opt_hair_type_unspecified">Не указывать</option>
+                  <option value="" data-i18n="opt_pick" selected disabled>Выберите…</option>
+                  <option value="straight" data-i18n="opt_type_straight">Прямые</option>
+                  <option value="wavy" data-i18n="opt_type_wavy">Волнистые</option>
+                  <option value="curly" data-i18n="opt_type_curly">Кудрявые</option>
+                  <option value="unspecified" data-i18n="opt_unspecified">Не указывать</option>
                 </select>
               </div>
             </div>
 
             <div class="grid-3">
               <div>
-                <label for="main_hair_density" id="label_main_hair_density">Густота</label>
+                <label for="main_hair_density" data-i18n="label_main_hair_density">Густота</label>
                 <select id="main_hair_density" name="main_hair_density">
-                  <option value="unspecified" selected>Не указывать</option>
-                  <option value="thin">Редкие</option>
-                  <option value="medium">Средние</option>
-                  <option value="thick">Густые</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="thin" data-i18n="opt_density_thin">Редкие</option>
+                  <option value="medium" data-i18n="opt_density_medium">Средние</option>
+                  <option value="thick" data-i18n="opt_density_thick">Густые</option>
                 </select>
               </div>
               <div>
-                <label for="main_bangs" id="label_main_bangs">Чёлка</label>
+                <label for="main_bangs" data-i18n="label_main_bangs">Чёлка</label>
                 <select id="main_bangs" name="main_bangs">
-                  <option value="unspecified" selected>Не указывать</option>
-                  <option value="yes">Есть</option>
-                  <option value="no">Нет</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="yes" data-i18n="opt_yes">Есть</option>
+                  <option value="no" data-i18n="opt_no">Нет</option>
                 </select>
               </div>
               <div>
-                <label for="main_parting" id="label_main_parting">Пробор</label>
+                <label for="main_parting" data-i18n="label_main_parting">Пробор</label>
                 <select id="main_parting" name="main_parting">
-                  <option value="unspecified" selected>Не указывать</option>
-                  <option value="left">Слева</option>
-                  <option value="right">Справа</option>
-                  <option value="center">По центру</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="left" data-i18n="opt_left">Слева</option>
+                  <option value="right" data-i18n="opt_right">Справа</option>
+                  <option value="center" data-i18n="opt_center">По центру</option>
                 </select>
               </div>
             </div>
 
             <div class="grid-2">
               <div>
-                <label for="main_nose" id="label_main_nose">Нос</label>
+                <label for="main_nose" data-i18n="label_main_nose">Нос</label>
                 <select id="main_nose" name="main_nose">
-                  <option value="unspecified" selected>Не указывать</option>
-                  <option value="small">Маленький</option>
-                  <option value="medium">Средний</option>
-                  <option value="prominent">Выраженный</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="small" data-i18n="opt_nose_small">Маленький</option>
+                  <option value="medium" data-i18n="opt_nose_medium">Средний</option>
+                  <option value="prominent" data-i18n="opt_nose_prominent">Выраженный</option>
                 </select>
               </div>
               <div>
-                <label for="main_lips" id="label_main_lips">Губы</label>
+                <label for="main_lips" data-i18n="label_main_lips">Губы</label>
                 <select id="main_lips" name="main_lips">
-                  <option value="unspecified" selected>Не указывать</option>
-                  <option value="thin">Тонкие</option>
-                  <option value="medium">Средние</option>
-                  <option value="full">Пухлые</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="thin" data-i18n="opt_lips_thin">Тонкие</option>
+                  <option value="medium" data-i18n="opt_lips_medium">Средние</option>
+                  <option value="full" data-i18n="opt_lips_full">Пухлые</option>
                 </select>
               </div>
             </div>
 
+            <span class="field-subtitle" data-i18n="sub_body">Телосложение</span>
             <div class="grid-2">
               <div>
-                <label for="main_body_type" id="label_main_body_type">Телосложение</label>
+                <label for="main_body_type" data-i18n="label_main_body_type">Тип</label>
                 <select id="main_body_type" name="main_body_type">
-                  <option value="unspecified" selected>Не указывать</option>
-                  <option value="slim">Худощавое</option>
-                  <option value="average">Среднее</option>
-                  <option value="chubby">Пухленькое</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="slim" data-i18n="opt_body_slim">Худощавое</option>
+                  <option value="average" data-i18n="opt_body_average">Среднее</option>
+                  <option value="chubby" data-i18n="opt_body_chubby">Пухленькое</option>
                 </select>
               </div>
               <div>
-                <label for="main_height_vs_peers" id="label_main_height_vs_peers">Рост относительно сверстников</label>
+                <label for="main_height_vs_peers" data-i18n="label_main_height_vs_peers">Рост относительно сверстников</label>
                 <select id="main_height_vs_peers" name="main_height_vs_peers">
-                  <option value="unspecified" selected>Не указывать</option>
-                  <option value="shorter">Ниже</option>
-                  <option value="average">Средний</option>
-                  <option value="taller">Выше</option>
+                  <option value="unspecified" data-i18n="opt_unspecified" selected>Не указывать</option>
+                  <option value="shorter" data-i18n="opt_shorter">Ниже</option>
+                  <option value="average" data-i18n="opt_avg">Средний</option>
+                  <option value="taller" data-i18n="opt_taller">Выше</option>
                 </select>
               </div>
             </div>
 
             <div>
-              <label for="main_special_features" id="label_main_special_features">Особенности ребёнка (опционально)</label>
-              <input id="main_special_features" name="main_special_features" maxlength="160" placeholder="Например, носит очки круглой формы" />
+              <label for="main_special_features" data-i18n="label_main_special_features">Особенности ребёнка (опционально)</label>
+              <input id="main_special_features" name="main_special_features" maxlength="160" data-i18n-placeholder="ph_main_special_features" placeholder="Например, носит очки круглой формы" />
             </div>
+
             <div>
-              <label for="main_signature_look" id="label_main_signature_look">Фирменный образ (опционально)</label>
-              <input id="main_signature_look" name="main_signature_look" maxlength="160" placeholder="Например, носит розовый свитер" />
+              <label for="main_signature_look" data-i18n="label_main_signature_look">Фирменный образ (опционально)</label>
+              <input id="main_signature_look" name="main_signature_look" maxlength="160" data-i18n-placeholder="ph_main_signature_look" placeholder="Например, носит розовый свитер" />
             </div>
           </div>
         </div>
 
         <!-- П.3 -->
         <div class="field">
-          <label for="second_hero_name" id="label_second_hero_name">Имя второго героя (опционально)</label>
-          <input id="second_hero_name" name="second_hero_name" placeholder="Можно оставить пустым" />
-          <small class="field-hint" id="hint_second_hero_name">Если имя не задано, второй герой не добавляется.</small>
+          <label for="second_hero_name" data-i18n="label_second_hero_name">Имя второго героя (опционально)</label>
+          <input id="second_hero_name" name="second_hero_name" data-i18n-placeholder="ph_second_hero_name" placeholder="Можно оставить пустым" />
+          <small class="field-hint" data-i18n="hint_second_hero_name">Если имя не задано, второй герой не добавляется.</small>
         </div>
 
-        <!-- П.4 -->
-        <div class="field hidden" id="secondHeroBlock">
-          <label id="label_second_hero_mode">Внешность второго героя</label>
+        <!-- П.4: внешность второго героя (появляется, если задано имя) -->
+        <div class="field hidden" id="secondHeroAppearanceField">
+          <label data-i18n="label_second_hero_mode">Внешность второго героя</label>
 
-          <div class="chip-row" id="secondHeroModeChips">
-            <button type="button" class="chip chip--active" data-value="preset" id="chip_second_preset">
-              <span id="chip_second_preset_title">Выбрать персонажа</span>
-              <small id="chip_second_preset_desc">6 готовых вариантов</small>
+          <div class="mode-grid" id="secondHeroModeTiles">
+            <button type="button" class="mode-tile mode-tile--active" data-value="preset">
+              <span data-i18n="second_mode_preset_title">Выбрать персонажа</span>
+              <small data-i18n="second_mode_preset_desc">6 готовых вариантов</small>
             </button>
-            <button type="button" class="chip" data-value="custom" id="chip_second_custom">
-              <span id="chip_second_custom_title">Персональный выбор</span>
-              <small id="chip_second_custom_desc">Короткая анкета</small>
+
+            <button type="button" class="mode-tile" data-value="custom">
+              <span data-i18n="second_mode_custom_title">Персональный выбор</span>
+              <small data-i18n="second_mode_custom_desc">Короткая анкета</small>
             </button>
-            <button type="button" class="chip" data-value="photo" id="chip_second_photo">
-              <span id="chip_second_photo_title">Загрузить фото</span>
-              <small id="chip_second_photo_desc">Фото отправите в чат после формы</small>
+
+            <button type="button" class="mode-tile" data-value="photo">
+              <span data-i18n="second_mode_photo_title">Загрузить фото</span>
+              <small data-i18n="second_mode_photo_desc">Фото отправите в чат после формы</small>
             </button>
           </div>
 
           <input type="hidden" id="second_hero_mode" name="second_hero_mode" value="preset" />
           <input type="hidden" id="second_hero_preset_id" name="second_hero_preset_id" value="puzyrek" />
 
-          <small class="field-hint" id="hint_second_hero_mode">
-            Если выбран режим «Загрузить фото», бот попросит прислать фото в чате после отправки формы.
-          </small>
-
-          <div id="secondHeroPresetBlock">
-            <span class="field-subtitle" id="subtitle_second_presets">Готовые персонажи</span>
-            <div class="chip-row" id="secondHeroPresetChips">
-              <button type="button" class="chip" data-preset="foxik">
-                <span id="preset_foxik_title">Лисёнок Фоксик</span>
-                <small id="preset_foxik_desc">Быстрый, любопытный, любит загадки</small>
+          <!-- preset -->
+          <div id="secondHeroPresetBlock" class="attention-block">
+            <span class="attention-title" data-i18n="second_presets_title">Готовые персонажи</span>
+            <div class="preset-grid" id="secondHeroPresetGrid">
+              <button type="button" class="preset-btn" data-preset="foxik">
+                <b data-i18n="preset_foxik_name">Лисёнок Фоксик</b>
+                <p data-i18n="preset_foxik_desc">Быстрый, любопытный, любит загадки и всегда предлагает план А и план Б</p>
               </button>
-              <button type="button" class="chip" data-preset="tikhonya">
-                <span id="preset_tikhonya_title">Сова Тихоня</span>
-                <small id="preset_tikhonya_desc">Спокойная, наблюдательная, объясняет просто</small>
+              <button type="button" class="preset-btn" data-preset="tikhonya">
+                <b data-i18n="preset_tikhonya_name">Сова Тихоня</b>
+                <p data-i18n="preset_tikhonya_desc">Спокойная, наблюдательная, объясняет сложное простыми словами</p>
               </button>
-              <button type="button" class="chip" data-preset="bublik">
-                <span id="preset_bublik_title">Щенок Бублик</span>
-                <small id="preset_bublik_desc">Добрый, верный, поддерживает</small>
+              <button type="button" class="preset-btn" data-preset="bublik">
+                <b data-i18n="preset_bublik_name">Щенок Бублик</b>
+                <p data-i18n="preset_bublik_desc">Добрый и верный, поддерживает, когда страшно или обидно</p>
               </button>
-              <button type="button" class="chip" data-preset="pixel">
-                <span id="preset_pixel_title">Робот Пиксель</span>
-                <small id="preset_pixel_desc">Изобретательный помощник, строит карты</small>
+              <button type="button" class="preset-btn" data-preset="pixel">
+                <b data-i18n="preset_pixel_name">Робот Пиксель</b>
+                <p data-i18n="preset_pixel_desc">Изобретательный помощник, строит карты и полезные устройства</p>
               </button>
-              <button type="button" class="chip" data-preset="iskrik">
-                <span id="preset_iskrik_title">Дракончик Искрик</span>
-                <small id="preset_iskrik_desc">Безобидный, «согревает» смелость</small>
+              <button type="button" class="preset-btn" data-preset="iskrik">
+                <b data-i18n="preset_iskrik_name">Дракончик Искрик</b>
+                <p data-i18n="preset_iskrik_desc">Безобидный, «согревает» смелость и поднимает настроение</p>
               </button>
-              <button type="button" class="chip chip--active" data-preset="puzyrek" id="preset_puzyrek_chip">
-                <span id="preset_puzyrek_title">Морской конёк Пузырёк</span>
-                <small id="preset_puzyrek_desc">Игривый, знает морские секреты</small>
+              <button type="button" class="preset-btn preset-btn--active" data-preset="puzyrek" id="secondPresetDefault">
+                <b data-i18n="preset_puzyrek_name">Морской конёк Пузырёк</b>
+                <p data-i18n="preset_puzyrek_desc">Игривый, знает морские секреты и всегда находит выход</p>
               </button>
             </div>
           </div>
 
-          <div id="secondHeroCustomBlock" class="hidden">
-            <span class="field-subtitle" id="subtitle_second_custom">Персональный выбор (кратко)</span>
+          <!-- custom -->
+          <div id="secondHeroCustomBlock" class="attention-block hidden">
+            <span class="attention-title" data-i18n="second_custom_title">Персональный выбор (кратко)</span>
 
             <div class="grid-2">
               <div>
-                <label for="second_custom_type" id="label_second_custom_type">Тип персонажа</label>
+                <label for="second_custom_type" data-i18n="label_second_custom_type">Тип персонажа</label>
                 <select id="second_custom_type" name="second_custom_type">
-                  <option value="animal">Животное</option>
-                  <option value="human">Человек</option>
-                  <option value="toy">Игрушка</option>
-                  <option value="fantasy">Сказочное существо</option>
-                  <option value="robot">Робот</option>
-                  <option value="animated_object">Предмет “оживший”</option>
-                  <option value="other">Другое</option>
+                  <option value="animal" data-i18n="opt_second_type_animal">Животное</option>
+                  <option value="human" data-i18n="opt_second_type_human">Человек</option>
+                  <option value="toy" data-i18n="opt_second_type_toy">Игрушка</option>
+                  <option value="fantasy" data-i18n="opt_second_type_fantasy">Сказочное существо</option>
+                  <option value="robot" data-i18n="opt_second_type_robot">Робот</option>
+                  <option value="animated_object" data-i18n="opt_second_type_animated">Оживший предмет</option>
+                  <option value="other" data-i18n="opt_other">Другое</option>
                 </select>
               </div>
               <div>
-                <label for="second_custom_role" id="label_second_custom_role">Ключевая роль</label>
+                <label for="second_custom_role" data-i18n="label_second_custom_role">Ключевая роль</label>
                 <select id="second_custom_role" name="second_custom_role">
-                  <option value="helper">Помощник</option>
-                  <option value="friend">Друг</option>
-                  <option value="mentor">Наставник</option>
-                  <option value="companion">Спутник</option>
-                  <option value="wise_advisor">Умный советчик</option>
-                  <option value="comic">Комический персонаж</option>
+                  <option value="helper" data-i18n="opt_role_helper">Помощник</option>
+                  <option value="friend" data-i18n="opt_role_friend">Друг</option>
+                  <option value="mentor" data-i18n="opt_role_mentor">Наставник</option>
+                  <option value="companion" data-i18n="opt_role_companion">Спутник</option>
+                  <option value="wise_advisor" data-i18n="opt_role_wise">Умный советчик</option>
+                  <option value="comic" data-i18n="opt_role_comic">Комический персонаж</option>
                 </select>
               </div>
             </div>
 
             <div id="secondTypeOtherWrap" class="hidden">
-              <label for="second_custom_type_other_text" id="label_second_custom_type_other_text">Уточните тип</label>
-              <input id="second_custom_type_other_text" name="second_custom_type_other_text" maxlength="60" placeholder="Например, облачко" />
+              <label for="second_custom_type_other_text" data-i18n="label_second_custom_type_other">Уточните тип</label>
+              <input id="second_custom_type_other_text" name="second_custom_type_other_text" maxlength="60" data-i18n-placeholder="ph_second_custom_type_other" placeholder="Например, облачко" />
             </div>
 
-            <label id="label_second_traits">3 характеристики (строго три)</label>
+            <span class="field-subtitle" data-i18n="label_second_traits">3 характеристики (строго три)</span>
             <div class="grid-3">
-              <input id="second_trait_1" maxlength="20" placeholder="смелый" />
-              <input id="second_trait_2" maxlength="20" placeholder="добрый" />
-              <input id="second_trait_3" maxlength="20" placeholder="любопытный" />
+              <input id="second_trait_1" maxlength="20" data-i18n-placeholder="ph_trait_1" placeholder="смелый" />
+              <input id="second_trait_2" maxlength="20" data-i18n-placeholder="ph_trait_2" placeholder="добрый" />
+              <input id="second_trait_3" maxlength="20" data-i18n-placeholder="ph_trait_3" placeholder="любопытный" />
             </div>
 
-            <label id="label_second_markers">Визуальные маркеры (2–3 признака)</label>
+            <span class="field-subtitle" data-i18n="label_second_markers">Визуальные маркеры (2–3 признака)</span>
             <div class="grid-3">
-              <input id="second_marker_1" maxlength="40" placeholder="голубая шапочка" />
-              <input id="second_marker_2" maxlength="40" placeholder="круглые очки" />
-              <input id="second_marker_3" maxlength="40" placeholder="рюкзачок без знаков (опц.)" />
+              <input id="second_marker_1" maxlength="40" data-i18n-placeholder="ph_marker_1" placeholder="голубая шапочка" />
+              <input id="second_marker_2" maxlength="40" data-i18n-placeholder="ph_marker_2" placeholder="круглые очки" />
+              <input id="second_marker_3" maxlength="40" data-i18n-placeholder="ph_marker_3" placeholder="рюкзачок (опц.)" />
             </div>
 
             <div>
-              <label for="second_unique_prop" id="label_second_unique_prop">Уникальный реквизит (ровно один предмет, опционально)</label>
-              <input id="second_unique_prop" name="second_unique_prop" maxlength="40" placeholder="Например, компас" />
+              <label for="second_unique_prop" data-i18n="label_second_unique_prop">Уникальный реквизит (1 предмет, опционально)</label>
+              <input id="second_unique_prop" name="second_unique_prop" maxlength="40" data-i18n-placeholder="ph_second_unique_prop" placeholder="Например, компас" />
             </div>
           </div>
         </div>
 
         <!-- П.5: место действия -->
         <div class="field">
-          <label id="label_setting_mode">Место действия *</label>
+          <label data-i18n="label_setting_mode">Место действия *</label>
 
-          <div class="chip-row" id="settingModeChips">
-            <button type="button" class="chip chip--active" data-value="preset" id="chip_setting_preset">
-              <span id="chip_setting_preset_title">Выбрать место</span>
-              <small id="chip_setting_preset_desc">6 вариантов</small>
+          <div class="mode-grid mode-grid--2" id="settingModeTiles">
+            <button type="button" class="mode-tile mode-tile--active" data-value="preset">
+              <span data-i18n="setting_mode_preset_title">Выбрать место</span>
+              <small data-i18n="setting_mode_preset_desc">6 вариантов</small>
             </button>
-            <button type="button" class="chip" data-value="custom" id="chip_setting_custom">
-              <span id="chip_setting_custom_title">Персонифицированное место</span>
-              <small id="chip_setting_custom_desc">Тип, время, сезон, детали</small>
+
+            <button type="button" class="mode-tile" data-value="custom">
+              <span data-i18n="setting_mode_custom_title">Персонифицированное место</span>
+              <small data-i18n="setting_mode_custom_desc">Тип, время, сезон, детали</small>
             </button>
           </div>
 
           <input type="hidden" id="setting_mode" name="setting_mode" value="preset" />
           <input type="hidden" id="setting_preset_id" name="setting_preset_id" value="fun_yard" />
 
-          <div id="settingPresetBlock">
-            <span class="field-subtitle" id="subtitle_setting_presets">Готовые места</span>
-            <div class="chip-row" id="settingPresetChips">
-              <button type="button" class="chip chip--active" data-preset="fun_yard" id="place_fun_yard">Двор весёлых игр</button>
-              <button type="button" class="chip" data-preset="warm_home" id="place_warm_home">Тёплый дом</button>
-              <button type="button" class="chip" data-preset="city_road" id="place_city_road">Дорога в городе</button>
-              <button type="button" class="chip" data-preset="park_nature" id="place_park_nature">Парк и природа</button>
-              <button type="button" class="chip" data-preset="wonder_lab" id="place_wonder_lab">Лаборатория чудес</button>
-              <button type="button" class="chip" data-preset="book_house" id="place_book_house">Дом книг</button>
+          <!-- preset places -->
+          <div id="settingPresetBlock" class="attention-block">
+            <span class="attention-title" data-i18n="setting_presets_title">Готовые места</span>
+            <div class="preset-grid" id="settingPresetGrid">
+              <button type="button" class="preset-btn preset-btn--active" data-preset="fun_yard" id="place_fun_yard">
+                <b data-i18n="place_fun_yard_name">Двор весёлых игр</b>
+                <p data-i18n="place_fun_yard_desc">Детская площадка / двор / сад</p>
+              </button>
+              <button type="button" class="preset-btn" data-preset="warm_home" id="place_warm_home">
+                <b data-i18n="place_warm_home_name">Тёплый дом</b>
+                <p data-i18n="place_warm_home_desc">Дом и семейный быт</p>
+              </button>
+              <button type="button" class="preset-btn" data-preset="city_road" id="place_city_road">
+                <b data-i18n="place_city_road_name">Дорога в городе</b>
+                <p data-i18n="place_city_road_desc">Городская улица и транспорт</p>
+              </button>
+              <button type="button" class="preset-btn" data-preset="park_nature" id="place_park_nature">
+                <b data-i18n="place_park_nature_name">Парк и природа</b>
+                <p data-i18n="place_park_nature_desc">Парк / экотропа / берег</p>
+              </button>
+              <button type="button" class="preset-btn" data-preset="wonder_lab" id="place_wonder_lab">
+                <b data-i18n="place_wonder_lab_name">Лаборатория чудес</b>
+                <p data-i18n="place_wonder_lab_desc">Мастерская / кружок / лаборатория</p>
+              </button>
+              <button type="button" class="preset-btn" data-preset="book_house" id="place_book_house">
+                <b data-i18n="place_book_house_name">Дом книг</b>
+                <p data-i18n="place_book_house_desc">Библиотека / книги</p>
+              </button>
             </div>
           </div>
 
-          <div id="settingCustomBlock" class="hidden">
-            <span class="field-subtitle" id="subtitle_setting_custom">Персонифицированное место</span>
+          <!-- custom place -->
+          <div id="settingCustomBlock" class="attention-block hidden">
+            <span class="attention-title" data-i18n="setting_custom_title">Персонифицированное место</span>
 
-            <div class="grid-2">
-              <div>
-                <label for="setting_custom_type" id="label_setting_custom_type">Тип места</label>
-                <select id="setting_custom_type" name="setting_custom_type">
-                  <option value="home">Дом</option>
-                  <option value="playground">Площадка</option>
-                  <option value="school_garden">Сад или школа</option>
-                  <option value="park_forest">Парк или лес</option>
-                  <option value="city">Город</option>
-                  <option value="other">Другое</option>
-                </select>
-              </div>
-              <div id="settingTypeOtherWrap" class="hidden">
-                <label for="setting_custom_type_other_text" id="label_setting_custom_type_other_text">Уточните тип</label>
-                <input id="setting_custom_type_other_text" name="setting_custom_type_other_text" maxlength="60" placeholder="Например, океанариум" />
-              </div>
+            <span class="field-subtitle" data-i18n="label_setting_custom_type">Тип места</span>
+            <div class="chip-row" id="settingTypeChips">
+              <button type="button" class="chip chip--active" data-value="home" data-i18n="opt_place_home">Дом</button>
+              <button type="button" class="chip" data-value="playground" data-i18n="opt_place_playground">Площадка</button>
+              <button type="button" class="chip" data-value="school_garden" data-i18n="opt_place_school">Сад или школа</button>
+              <button type="button" class="chip" data-value="park_forest" data-i18n="opt_place_park">Парк или лес</button>
+              <button type="button" class="chip" data-value="city" data-i18n="opt_place_city">Город</button>
+              <button type="button" class="chip" data-value="other" data-i18n="opt_other">Другое</button>
+            </div>
+            <input type="hidden" id="setting_custom_type" name="setting_custom_type" value="home" />
+
+            <div id="settingTypeOtherWrap" class="hidden" style="margin-top:8px;">
+              <label for="setting_custom_type_other_text" data-i18n="label_setting_type_other">Уточните тип</label>
+              <input id="setting_custom_type_other_text" name="setting_custom_type_other_text" maxlength="60"
+                     data-i18n-placeholder="ph_setting_type_other" placeholder="Например, океанариум" />
             </div>
 
-            <div class="grid-2">
+            <div class="grid-2" style="margin-top:10px;">
               <div>
-                <label for="setting_custom_time" id="label_setting_custom_time">Время</label>
+                <label for="setting_custom_time" data-i18n="label_setting_time">Время</label>
                 <select id="setting_custom_time" name="setting_custom_time">
-                  <option value="morning">Утро</option>
-                  <option value="day" selected>День</option>
-                  <option value="evening">Вечер</option>
+                  <option value="morning" data-i18n="opt_time_morning">Утро</option>
+                  <option value="day" data-i18n="opt_time_day" selected>День</option>
+                  <option value="evening" data-i18n="opt_time_evening">Вечер</option>
                 </select>
               </div>
               <div>
-                <label for="setting_custom_season" id="label_setting_custom_season">Сезон</label>
+                <label for="setting_custom_season" data-i18n="label_setting_season">Сезон</label>
                 <select id="setting_custom_season" name="setting_custom_season">
-                  <option value="spring">Весна</option>
-                  <option value="summer" selected>Лето</option>
-                  <option value="autumn">Осень</option>
-                  <option value="winter">Зима</option>
+                  <option value="spring" data-i18n="opt_season_spring">Весна</option>
+                  <option value="summer" data-i18n="opt_season_summer" selected>Лето</option>
+                  <option value="autumn" data-i18n="opt_season_autumn">Осень</option>
+                  <option value="winter" data-i18n="opt_season_winter">Зима</option>
                 </select>
               </div>
             </div>
 
-            <label id="label_setting_details">Три детали места</label>
-            <div class="grid-3">
-              <input id="setting_detail_1" maxlength="40" placeholder="синяя дверь" />
-              <input id="setting_detail_2" maxlength="40" placeholder="ковёр со звёздами" />
-              <input id="setting_detail_3" maxlength="40" placeholder="большой фикус" />
+            <span class="field-subtitle" data-i18n="label_setting_details">Три детали места</span>
+            <small class="field-hint" data-i18n="hint_setting_details">Например: «синяя дверь, ковёр со звёздами, большой фикус»</small>
+            <div class="grid-3" style="margin-top:6px;">
+              <input id="setting_detail_1" maxlength="40" data-i18n-placeholder="ph_setting_detail_1" placeholder="синяя дверь" />
+              <input id="setting_detail_2" maxlength="40" data-i18n-placeholder="ph_setting_detail_2" placeholder="ковёр со звёздами" />
+              <input id="setting_detail_3" maxlength="40" data-i18n-placeholder="ph_setting_detail_3" placeholder="большой фикус" />
             </div>
 
-            <label id="label_setting_realism">Реалистичность</label>
+            <span class="field-subtitle" data-i18n="label_setting_realism">Реалистичность</span>
             <div class="chip-row" id="settingRealismChips">
-              <button type="button" class="chip chip--active" data-value="life" id="chip_realism_life">Как в жизни</button>
-              <button type="button" class="chip" data-value="slightly_fairy" id="chip_realism_fairy">Чуть сказочно, но узнаваемо</button>
+              <button type="button" class="chip chip--active" data-value="life" data-i18n="opt_realism_life">Как в жизни</button>
+              <button type="button" class="chip" data-value="slightly_fairy" data-i18n="opt_realism_fairy">Чуть сказочно, но узнаваемо</button>
             </div>
             <input type="hidden" id="setting_custom_realism" name="setting_custom_realism" value="life" />
           </div>
@@ -764,79 +830,77 @@
 
         <!-- П.6 -->
         <div class="field">
-          <label for="age_group" id="label_age_group">Возрастная группа *</label>
+          <label for="age_group" data-i18n="label_age_group">Возрастная группа *</label>
           <select id="age_group" name="age_group" required>
-            <option value="0_3">0–3</option>
-            <option value="4_6" selected>4–6</option>
-            <option value="7_12">7–12</option>
-            <option value="12_16">12–16</option>
-            <option value="16_plus">16+</option>
+            <option value="0_3" data-i18n="opt_age_0_3">0–3</option>
+            <option value="4_6" data-i18n="opt_age_4_6" selected>4–6</option>
+            <option value="7_12" data-i18n="opt_age_7_12">7–12</option>
+            <option value="12_16" data-i18n="opt_age_12_16">12–16</option>
+            <option value="16_plus" data-i18n="opt_age_16_plus">16+</option>
           </select>
         </div>
 
         <!-- П.7 -->
         <div class="field">
-          <label for="narrative_style" id="label_narrative_style">Стиль повествования *</label>
+          <label for="narrative_style" data-i18n="label_narrative_style">Стиль повествования *</label>
           <select id="narrative_style" name="narrative_style" required>
-            <option value="calm">Спокойный медитативный</option>
-            <option value="adventure">Приключенческий</option>
-            <option value="mystery">Загадочный</option>
-            <option value="humor">С юмором</option>
-            <option value="lyric">Лирический</option>
+            <option value="calm" data-i18n="opt_style_calm">Спокойный медитативный</option>
+            <option value="adventure" data-i18n="opt_style_adventure">Приключенческий</option>
+            <option value="mystery" data-i18n="opt_style_mystery">Загадочный</option>
+            <option value="humor" data-i18n="opt_style_humor">С юмором</option>
+            <option value="lyric" data-i18n="opt_style_lyric">Лирический</option>
           </select>
         </div>
 
         <!-- П.8 -->
         <div class="field">
-          <label for="moral_theme" id="label_moral_theme">Поучительный сюжет *</label>
+          <label for="moral_theme" data-i18n="label_moral_theme">Поучительный сюжет *</label>
           <select id="moral_theme" name="moral_theme" required>
-            <option value="kindness_help">Доброта и помощь другим</option>
-            <option value="power_of_friendship">Сила дружбы</option>
-            <option value="honesty_trust">Честность и доверие</option>
-            <option value="accepting_differences">Принятие различий</option>
-            <option value="admitting_mistakes">Умение признавать ошибки</option>
-            <option value="patience_perseverance">Терпение и настойчивость</option>
-            <option value="care_for_nature">Забота о природе</option>
-            <option value="safety_caution">Безопасность и осторожность</option>
-            <option value="respect_parents_adults">Уважение к родителям и взрослым</option>
-            <option value="sharing">Умение делиться</option>
-            <option value="independence_responsibility">Самостоятельность и ответственность</option>
-            <option value="emotions_expression">Эмоции и умение говорить о них</option>
-            <option value="anti_bullying">Противостояние буллингу</option>
-            <option value="value_of_work">Ценность труда</option>
-            <option value="tidiness_order">Аккуратность и порядок</option>
-            <option value="gadgets_moderation">Умеренность в гаджетах</option>
-            <option value="gratitude">Благодарность</option>
-            <option value="imagination_creativity">Воображение и творчество</option>
+            <option value="kindness_help" data-i18n="opt_moral_kindness_help">Доброта и помощь другим</option>
+            <option value="power_of_friendship" data-i18n="opt_moral_friendship">Сила дружбы</option>
+            <option value="honesty_trust" data-i18n="opt_moral_honesty">Честность и доверие</option>
+            <option value="accepting_differences" data-i18n="opt_moral_differences">Принятие различий</option>
+            <option value="admitting_mistakes" data-i18n="opt_moral_mistakes">Умение признавать ошибки</option>
+            <option value="patience_perseverance" data-i18n="opt_moral_patience">Терпение и настойчивость</option>
+            <option value="care_for_nature" data-i18n="opt_moral_nature">Забота о природе</option>
+            <option value="safety_caution" data-i18n="opt_moral_safety">Безопасность и осторожность</option>
+            <option value="respect_parents_adults" data-i18n="opt_moral_respect">Уважение к родителям и взрослым</option>
+            <option value="sharing" data-i18n="opt_moral_sharing">Умение делиться</option>
+            <option value="independence_responsibility" data-i18n="opt_moral_independence">Самостоятельность и ответственность</option>
+            <option value="emotions_expression" data-i18n="opt_moral_emotions">Эмоции и умение говорить о них</option>
+            <option value="anti_bullying" data-i18n="opt_moral_bullying">Противостояние буллингу</option>
+            <option value="value_of_work" data-i18n="opt_moral_work">Ценность труда</option>
+            <option value="tidiness_order" data-i18n="opt_moral_tidiness">Аккуратность и порядок</option>
+            <option value="gadgets_moderation" data-i18n="opt_moral_gadgets">Умеренность в гаджетах</option>
+            <option value="gratitude" data-i18n="opt_moral_gratitude">Благодарность</option>
+            <option value="imagination_creativity" data-i18n="opt_moral_creativity">Воображение и творчество</option>
           </select>
         </div>
 
         <!-- П.9 -->
         <div class="field">
-          <label for="illustration_style_id" id="label_illustration_style_id">Стиль иллюстраций *</label>
+          <label for="illustration_style_id" data-i18n="label_illustration_style">Стиль иллюстраций *</label>
           <select id="illustration_style_id" name="illustration_style_id" required>
-            <option value="storybook_semi_realism">Полу-реалистичная книжная иллюстрация</option>
-            <option value="cartoon_3d">3D мульт</option>
-            <option value="watercolor_ink">Акварель + тушь</option>
-            <option value="gouache_flat">Гуашь / плоская иллюстрация с объёмом</option>
-            <option value="clean_vector">Векторная иллюстрация</option>
-            <option value="anime">Аниме</option>
+            <option value="storybook_semi_realism" data-i18n="opt_ill_semi_realism">Полу-реалистичная книжная иллюстрация</option>
+            <option value="cartoon_3d" data-i18n="opt_ill_3d">3D мульт</option>
+            <option value="watercolor_ink" data-i18n="opt_ill_watercolor_ink">Акварель + тушь</option>
+            <option value="gouache_flat" data-i18n="opt_ill_gouache">Гуашь / плоская иллюстрация с объёмом</option>
+            <option value="clean_vector" data-i18n="opt_ill_vector">Векторная иллюстрация</option>
+            <option value="anime" data-i18n="opt_ill_anime">Аниме</option>
           </select>
         </div>
 
         <!-- П.10 -->
         <div class="field">
-          <label for="language" id="label_language">Язык сказки *</label>
+          <label for="language" data-i18n="label_story_language">Язык сказки *</label>
           <select id="language" name="language" required>
-            <option value="ru">Русский</option>
-            <option value="en">English</option>
+            <option value="ru" data-i18n="opt_lang_ru">Русский</option>
+            <option value="en" data-i18n="opt_lang_en">English</option>
           </select>
         </div>
 
-        <button type="submit" id="submitBtn">Создать сказку</button>
-        <p class="note" id="note">
-          После формы бот при необходимости запросит фото в чате. Медиа загружается в чат, а MiniApp отправляет строго структурированный JSON.
-        </p>
+        <button type="submit" id="submitBtn" data-i18n="submit">Создать сказку</button>
+        <p class="note" id="note"></p>
       </form>
     </div>
   </main>
@@ -846,258 +910,652 @@
     const isTelegramWebApp = Boolean(tg && (tg.initData || tg.initDataUnsafe));
     const WEBHOOK_URL = 'https://oglob.app.n8n.cloud/webhook-test/telegram-puzirek';
 
-    if (isTelegramWebApp) {
-      tg.ready();
-      tg.expand();
-    }
+    if (isTelegramWebApp) { tg.ready(); tg.expand(); }
 
     const form = document.getElementById('storyForm');
     const submitBtn = document.getElementById('submitBtn');
+    const noteEl = document.getElementById('note');
 
     const sessionId = (crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()) + "_" + Math.random().toString(16).slice(2));
 
-    const translations = {
+    const I18N = {
       ru: {
-        title: 'Создать сказку',
-        description: 'Заполните параметры — бот сгенерирует персональную сказку и отправит её в чат в виде PDF-книги.',
-        main_hero_name_label: 'Имя главного героя *',
-        main_hero_name_placeholder: 'Например, Арина',
+        title: "Создать сказку",
+        description: "Заполните параметры — бот сгенерирует персональную сказку и отправит её в чат в виде PDF-книги.",
 
-        main_hero_appearance_mode_label: 'Внешность главного героя *',
-        main_mode_auto_title: 'Предложить внешность',
-        main_mode_auto_desc: 'Автогенерация без параметров',
-        main_mode_select_title: 'Выбрать внешность',
-        main_mode_select_desc: 'Параметры: кожа, глаза, волосы…',
-        main_mode_photo_title: 'Загрузить фото',
-        main_mode_photo_desc: 'Фото отправите в чат после формы',
-        main_appearance_subtitle: 'Параметры внешности (для узнаваемости)',
+        label_main_hero_name: "Имя главного героя *",
+        ph_main_hero_name: "Например, Арина",
 
-        second_hero_name_label: 'Имя второго героя (опционально)',
-        second_hero_name_placeholder: 'Можно оставить пустым',
-        second_hero_name_hint: 'Если имя не задано, второй герой не добавляется.',
+        label_main_hero_mode: "Внешность главного героя *",
+        main_mode_auto_title: "Предложить внешность",
+        main_mode_auto_desc: "Автогенерация без параметров",
+        main_mode_select_title: "Выбрать внешность",
+        main_mode_select_desc: "Параметры: кожа, глаза, волосы…",
+        main_mode_photo_title: "Загрузить фото",
+        main_mode_photo_desc: "Фото отправите в чат после формы",
+        main_appearance_title: "Параметры внешности (для узнаваемости)",
 
-        second_hero_mode_label: 'Внешность второго героя',
-        second_mode_hint: 'Если выбран режим «Загрузить фото», бот попросит прислать фото в чате после отправки формы.',
-        second_mode_preset_title: 'Выбрать персонажа',
-        second_mode_preset_desc: '6 готовых вариантов',
-        second_mode_custom_title: 'Персональный выбор',
-        second_mode_custom_desc: 'Короткая анкета',
-        second_mode_photo_title: 'Загрузить фото',
-        second_mode_photo_desc: 'Фото отправите в чат после формы',
-        second_presets_subtitle: 'Готовые персонажи',
-        second_custom_subtitle: 'Персональный выбор (кратко)',
+        label_main_age_years: "Возраст (цифрой)",
+        ph_main_age_years: "Например, 4",
+        label_main_gender: "Пол",
+        opt_unspecified: "Не указывать",
+        opt_girl: "Девочка",
+        opt_boy: "Мальчик",
 
-        setting_mode_label: 'Место действия *',
-        setting_mode_preset_title: 'Выбрать место',
-        setting_mode_preset_desc: '6 вариантов',
-        setting_mode_custom_title: 'Персонифицированное место',
-        setting_mode_custom_desc: 'Тип, время, сезон, детали',
-        setting_presets_subtitle: 'Готовые места',
-        setting_custom_subtitle: 'Персонифицированное место',
+        label_main_skin_tone: "Тон кожи *",
+        opt_pick: "Выберите…",
+        opt_skin_very_light: "Очень светлый",
+        opt_skin_light: "Светлый",
+        opt_skin_medium: "Средний",
+        opt_skin_tan: "Смуглый",
+        opt_skin_dark: "Тёмный",
 
-        age_group_label: 'Возрастная группа *',
-        narrative_style_label: 'Стиль повествования *',
-        moral_theme_label: 'Поучительный сюжет *',
-        illustration_style_label: 'Стиль иллюстраций *',
-        language_label: 'Язык сказки *',
+        label_main_face_shape: "Форма лица",
+        opt_face_round: "Круглое",
+        opt_face_oval: "Овальное",
+        opt_face_long: "Удлинённое",
 
-        submit: 'Создать сказку',
-        note_base: 'После формы бот при необходимости запросит фото в чате. Медиа загружается в чат, а MiniApp отправляет строго структурированный JSON.'
+        label_main_face_accent: "Акцент лица (опционально)",
+        ph_main_face_accent: "Например, веснушки",
+        hint_main_face_accent: "Короткая деталь, которую важно сохранить.",
+
+        sub_eyes: "Глаза",
+        label_main_eyes_color: "Цвет *",
+        opt_eyes_brown: "Карие",
+        opt_eyes_blue: "Голубые",
+        opt_eyes_gray: "Серые",
+        opt_eyes_green: "Зелёные",
+        opt_eyes_hazel: "Ореховые",
+        label_main_eyes_shape: "Форма",
+        opt_eyes_shape_round: "Круглые",
+        opt_eyes_shape_almond: "Миндaлевидные",
+        label_main_eyes_size: "Размер",
+        opt_size_small: "Небольшие",
+        opt_size_medium: "Средние",
+        opt_size_large: "Крупные",
+
+        sub_hair: "Волосы",
+        label_main_hair_color: "Цвет *",
+        opt_hair_blond: "Блонд",
+        opt_hair_light_brown: "Русые",
+        opt_hair_chestnut: "Каштановые",
+        opt_hair_dark: "Тёмные",
+        opt_hair_red: "Рыжие",
+        opt_hair_black: "Чёрные",
+        label_main_hair_length: "Длина *",
+        opt_len_very_short: "Очень короткие",
+        opt_len_short: "Короткие",
+        opt_len_shoulder: "До плеч",
+        opt_len_long: "Длинные",
+        label_main_hair_type: "Тип *",
+        opt_type_straight: "Прямые",
+        opt_type_wavy: "Волнистые",
+        opt_type_curly: "Кудрявые",
+        label_main_hair_density: "Густота",
+        opt_density_thin: "Редкие",
+        opt_density_medium: "Средние",
+        opt_density_thick: "Густые",
+        label_main_bangs: "Чёлка",
+        opt_yes: "Есть",
+        opt_no: "Нет",
+        label_main_parting: "Пробор",
+        opt_left: "Слева",
+        opt_right: "Справа",
+        opt_center: "По центру",
+
+        label_main_nose: "Нос",
+        opt_nose_small: "Маленький",
+        opt_nose_medium: "Средний",
+        opt_nose_prominent: "Выраженный",
+        label_main_lips: "Губы",
+        opt_lips_thin: "Тонкие",
+        opt_lips_medium: "Средние",
+        opt_lips_full: "Пухлые",
+
+        sub_body: "Телосложение",
+        label_main_body_type: "Тип",
+        opt_body_slim: "Худощавое",
+        opt_body_average: "Среднее",
+        opt_body_chubby: "Пухленькое",
+        label_main_height_vs_peers: "Рост относительно сверстников",
+        opt_shorter: "Ниже",
+        opt_avg: "Средний",
+        opt_taller: "Выше",
+
+        label_main_special_features: "Особенности ребёнка (опционально)",
+        ph_main_special_features: "Например, носит очки круглой формы",
+        label_main_signature_look: "Фирменный образ (опционально)",
+        ph_main_signature_look: "Например, носит розовый свитер",
+
+        label_second_hero_name: "Имя второго героя (опционально)",
+        ph_second_hero_name: "Можно оставить пустым",
+        hint_second_hero_name: "Если имя не задано, второй герой не добавляется.",
+
+        label_second_hero_mode: "Внешность второго героя",
+        second_mode_preset_title: "Выбрать персонажа",
+        second_mode_preset_desc: "6 готовых вариантов",
+        second_mode_custom_title: "Персональный выбор",
+        second_mode_custom_desc: "Короткая анкета",
+        second_mode_photo_title: "Загрузить фото",
+        second_mode_photo_desc: "Фото отправите в чат после формы",
+        second_presets_title: "Готовые персонажи",
+        second_custom_title: "Персональный выбор (кратко)",
+
+        preset_foxik_name: "Лисёнок Фоксик",
+        preset_foxik_desc: "Быстрый, любопытный, любит загадки и всегда предлагает план А и план Б",
+        preset_tikhonya_name: "Сова Тихоня",
+        preset_tikhonya_desc: "Спокойная, наблюдательная, объясняет сложное простыми словами",
+        preset_bublik_name: "Щенок Бублик",
+        preset_bublik_desc: "Добрый и верный, поддерживает, когда страшно или обидно",
+        preset_pixel_name: "Робот Пиксель",
+        preset_pixel_desc: "Изобретательный помощник, строит карты и полезные устройства",
+        preset_iskrik_name: "Дракончик Искрик",
+        preset_iskrik_desc: "Безобидный, «согревает» смелость и поднимает настроение",
+        preset_puzyrek_name: "Морской конёк Пузырёк",
+        preset_puzyrek_desc: "Игривый, знает морские секреты и всегда находит выход",
+
+        label_second_custom_type: "Тип персонажа",
+        opt_second_type_animal: "Животное",
+        opt_second_type_human: "Человек",
+        opt_second_type_toy: "Игрушка",
+        opt_second_type_fantasy: "Сказочное существо",
+        opt_second_type_robot: "Робот",
+        opt_second_type_animated: "Оживший предмет",
+        opt_other: "Другое",
+        label_second_custom_role: "Ключевая роль",
+        opt_role_helper: "Помощник",
+        opt_role_friend: "Друг",
+        opt_role_mentor: "Наставник",
+        opt_role_companion: "Спутник",
+        opt_role_wise: "Умный советчик",
+        opt_role_comic: "Комический персонаж",
+        label_second_custom_type_other: "Уточните тип",
+        ph_second_custom_type_other: "Например, облачко",
+        label_second_traits: "3 характеристики (строго три)",
+        ph_trait_1: "смелый",
+        ph_trait_2: "добрый",
+        ph_trait_3: "любопытный",
+        label_second_markers: "Визуальные маркеры (2–3 признака)",
+        ph_marker_1: "голубая шапочка",
+        ph_marker_2: "круглые очки",
+        ph_marker_3: "рюкзачок (опц.)",
+        label_second_unique_prop: "Уникальный реквизит (1 предмет, опционально)",
+        ph_second_unique_prop: "Например, компас",
+
+        label_setting_mode: "Место действия *",
+        setting_mode_preset_title: "Выбрать место",
+        setting_mode_preset_desc: "6 вариантов",
+        setting_mode_custom_title: "Персонифицированное место",
+        setting_mode_custom_desc: "Тип, время, сезон, детали",
+        setting_presets_title: "Готовые места",
+        setting_custom_title: "Персонифицированное место",
+
+        place_fun_yard_name: "Двор весёлых игр",
+        place_fun_yard_desc: "Детская площадка / двор / сад",
+        place_warm_home_name: "Тёплый дом",
+        place_warm_home_desc: "Дом и семейный быт",
+        place_city_road_name: "Дорога в городе",
+        place_city_road_desc: "Городская улица и транспорт",
+        place_park_nature_name: "Парк и природа",
+        place_park_nature_desc: "Парк / экотропа / берег",
+        place_wonder_lab_name: "Лаборатория чудес",
+        place_wonder_lab_desc: "Мастерская / кружок / лаборатория",
+        place_book_house_name: "Дом книг",
+        place_book_house_desc: "Библиотека / книги",
+
+        label_setting_custom_type: "Тип места",
+        opt_place_home: "Дом",
+        opt_place_playground: "Площадка",
+        opt_place_school: "Сад или школа",
+        opt_place_park: "Парк или лес",
+        opt_place_city: "Город",
+        label_setting_type_other: "Уточните тип",
+        ph_setting_type_other: "Например, океанариум",
+        label_setting_time: "Время",
+        opt_time_morning: "Утро",
+        opt_time_day: "День",
+        opt_time_evening: "Вечер",
+        label_setting_season: "Сезон",
+        opt_season_spring: "Весна",
+        opt_season_summer: "Лето",
+        opt_season_autumn: "Осень",
+        opt_season_winter: "Зима",
+        label_setting_details: "Три детали места",
+        hint_setting_details: "Например: «синяя дверь, ковёр со звёздами, большой фикус»",
+        ph_setting_detail_1: "синяя дверь",
+        ph_setting_detail_2: "ковёр со звёздами",
+        ph_setting_detail_3: "большой фикус",
+        label_setting_realism: "Реалистичность",
+        opt_realism_life: "Как в жизни",
+        opt_realism_fairy: "Чуть сказочно, но узнаваемо",
+
+        label_age_group: "Возрастная группа *",
+        opt_age_0_3: "0–3",
+        opt_age_4_6: "4–6",
+        opt_age_7_12: "7–12",
+        opt_age_12_16: "12–16",
+        opt_age_16_plus: "16+",
+
+        label_narrative_style: "Стиль повествования *",
+        opt_style_calm: "Спокойный медитативный",
+        opt_style_adventure: "Приключенческий",
+        opt_style_mystery: "Загадочный",
+        opt_style_humor: "С юмором",
+        opt_style_lyric: "Лирический",
+
+        label_moral_theme: "Поучительный сюжет *",
+        opt_moral_kindness_help: "Доброта и помощь другим",
+        opt_moral_friendship: "Сила дружбы",
+        opt_moral_honesty: "Честность и доверие",
+        opt_moral_differences: "Принятие различий",
+        opt_moral_mistakes: "Умение признавать ошибки",
+        opt_moral_patience: "Терпение и настойчивость",
+        opt_moral_nature: "Забота о природе",
+        opt_moral_safety: "Безопасность и осторожность",
+        opt_moral_respect: "Уважение к родителям и взрослым",
+        opt_moral_sharing: "Умение делиться",
+        opt_moral_independence: "Самостоятельность и ответственность",
+        opt_moral_emotions: "Эмоции и умение говорить о них",
+        opt_moral_bullying: "Противостояние буллингу",
+        opt_moral_work: "Ценность труда",
+        opt_moral_tidiness: "Аккуратность и порядок",
+        opt_moral_gadgets: "Умеренность в гаджетах",
+        opt_moral_gratitude: "Благодарность",
+        opt_moral_creativity: "Воображение и творчество",
+
+        label_illustration_style: "Стиль иллюстраций *",
+        opt_ill_semi_realism: "Полу-реалистичная книжная иллюстрация",
+        opt_ill_3d: "3D мульт",
+        opt_ill_watercolor_ink: "Акварель + тушь",
+        opt_ill_gouache: "Гуашь / плоская иллюстрация с объёмом",
+        opt_ill_vector: "Векторная иллюстрация",
+        opt_ill_anime: "Аниме",
+
+        label_story_language: "Язык сказки *",
+        opt_lang_ru: "Русский",
+        opt_lang_en: "English",
+
+        submit: "Создать сказку",
+
+        alert_not_telegram: "Открыто не внутри Telegram",
+        alert_second_custom_invalid: "Для персонального второго героя заполните 3 характеристики и минимум 2 визуальных маркера.",
+        alert_setting_custom_invalid: "Для персонифицированного места заполните 3 детали.",
+
+        note_base: "После отправки формы бот при необходимости запросит фото в чате. Медиа загружается в чат, а MiniApp отправляет строго структурированный JSON.",
+        note_will_ask: "После отправки формы бот запросит",
+        note_order: "Порядок: сначала главный герой, затем второй."
       },
+
       en: {
-        title: 'Create a story',
-        description: 'Fill in the fields — the bot will generate a personalised story and send it to the chat as a PDF book.',
-        main_hero_name_label: 'Main character’s name *',
-        main_hero_name_placeholder: 'For example, Arina',
+        title: "Create a story",
+        description: "Fill in the fields — the bot will generate a personalised story and send it to the chat as a PDF book.",
 
-        main_hero_appearance_mode_label: 'Main character appearance *',
-        main_mode_auto_title: 'Suggest an appearance',
-        main_mode_auto_desc: 'Auto, no parameters',
-        main_mode_select_title: 'Choose appearance',
-        main_mode_select_desc: 'Skin, eyes, hair…',
-        main_mode_photo_title: 'Upload photo',
-        main_mode_photo_desc: 'Send it in chat after the form',
-        main_appearance_subtitle: 'Appearance parameters (for recognisability)',
+        label_main_hero_name: "Main character’s name *",
+        ph_main_hero_name: "For example, Arina",
 
-        second_hero_name_label: 'Second character’s name (optional)',
-        second_hero_name_placeholder: 'You may leave this empty',
-        second_hero_name_hint: 'If empty, the second character will not be added.',
+        label_main_hero_mode: "Main character appearance *",
+        main_mode_auto_title: "Suggest an appearance",
+        main_mode_auto_desc: "Auto, no parameters",
+        main_mode_select_title: "Choose appearance",
+        main_mode_select_desc: "Skin, eyes, hair…",
+        main_mode_photo_title: "Upload photo",
+        main_mode_photo_desc: "Send it in chat after the form",
+        main_appearance_title: "Appearance parameters (for recognisability)",
 
-        second_hero_mode_label: 'Second character appearance',
-        second_mode_hint: 'If you choose “Upload photo”, the bot will ask for the photo in the chat after you submit the form.',
-        second_mode_preset_title: 'Pick a character',
-        second_mode_preset_desc: '6 ready presets',
-        second_mode_custom_title: 'Custom',
-        second_mode_custom_desc: 'Short questionnaire',
-        second_mode_photo_title: 'Upload photo',
-        second_mode_photo_desc: 'Send it in chat after the form',
-        second_presets_subtitle: 'Ready characters',
-        second_custom_subtitle: 'Custom (short)',
+        label_main_age_years: "Age (number)",
+        ph_main_age_years: "For example, 4",
+        label_main_gender: "Gender",
+        opt_unspecified: "Prefer not to say",
+        opt_girl: "Girl",
+        opt_boy: "Boy",
 
-        setting_mode_label: 'Setting *',
-        setting_mode_preset_title: 'Pick a place',
-        setting_mode_preset_desc: '6 presets',
-        setting_mode_custom_title: 'Personalised place',
-        setting_mode_custom_desc: 'Type, time, season, details',
-        setting_presets_subtitle: 'Preset places',
-        setting_custom_subtitle: 'Personalised place',
+        label_main_skin_tone: "Skin tone *",
+        opt_pick: "Select…",
+        opt_skin_very_light: "Very light",
+        opt_skin_light: "Light",
+        opt_skin_medium: "Medium",
+        opt_skin_tan: "Tan",
+        opt_skin_dark: "Dark",
 
-        age_group_label: 'Age group *',
-        narrative_style_label: 'Narrative style *',
-        moral_theme_label: 'Educational plot *',
-        illustration_style_label: 'Illustration style *',
-        language_label: 'Story language *',
+        label_main_face_shape: "Face shape",
+        opt_face_round: "Round",
+        opt_face_oval: "Oval",
+        opt_face_long: "Long",
 
-        submit: 'Create story',
-        note_base: 'After submitting, the bot may ask for photos in the chat. Media is sent in chat; the MiniApp sends a structured JSON payload.'
+        label_main_face_accent: "Face accent (optional)",
+        ph_main_face_accent: "For example, freckles",
+        hint_main_face_accent: "A short detail worth preserving.",
+
+        sub_eyes: "Eyes",
+        label_main_eyes_color: "Colour *",
+        opt_eyes_brown: "Brown",
+        opt_eyes_blue: "Blue",
+        opt_eyes_gray: "Grey",
+        opt_eyes_green: "Green",
+        opt_eyes_hazel: "Hazel",
+        label_main_eyes_shape: "Shape",
+        opt_eyes_shape_round: "Round",
+        opt_eyes_shape_almond: "Almond",
+        label_main_eyes_size: "Size",
+        opt_size_small: "Small",
+        opt_size_medium: "Medium",
+        opt_size_large: "Large",
+
+        sub_hair: "Hair",
+        label_main_hair_color: "Colour *",
+        opt_hair_blond: "Blonde",
+        opt_hair_light_brown: "Light brown",
+        opt_hair_chestnut: "Chestnut",
+        opt_hair_dark: "Dark",
+        opt_hair_red: "Red",
+        opt_hair_black: "Black",
+        label_main_hair_length: "Length *",
+        opt_len_very_short: "Very short",
+        opt_len_short: "Short",
+        opt_len_shoulder: "Shoulder length",
+        opt_len_long: "Long",
+        label_main_hair_type: "Type *",
+        opt_type_straight: "Straight",
+        opt_type_wavy: "Wavy",
+        opt_type_curly: "Curly",
+        label_main_hair_density: "Density",
+        opt_density_thin: "Thin",
+        opt_density_medium: "Medium",
+        opt_density_thick: "Thick",
+        label_main_bangs: "Bangs",
+        opt_yes: "Yes",
+        opt_no: "No",
+        label_main_parting: "Parting",
+        opt_left: "Left",
+        opt_right: "Right",
+        opt_center: "Center",
+
+        label_main_nose: "Nose",
+        opt_nose_small: "Small",
+        opt_nose_medium: "Medium",
+        opt_nose_prominent: "Prominent",
+        label_main_lips: "Lips",
+        opt_lips_thin: "Thin",
+        opt_lips_medium: "Medium",
+        opt_lips_full: "Full",
+
+        sub_body: "Build",
+        label_main_body_type: "Type",
+        opt_body_slim: "Slim",
+        opt_body_average: "Average",
+        opt_body_chubby: "Chubby",
+        label_main_height_vs_peers: "Height vs peers",
+        opt_shorter: "Shorter",
+        opt_avg: "Average",
+        opt_taller: "Taller",
+
+        label_main_special_features: "Child’s features (optional)",
+        ph_main_special_features: "For example, wears round glasses",
+        label_main_signature_look: "Signature look (optional)",
+        ph_main_signature_look: "For example, wears a pink jumper",
+
+        label_second_hero_name: "Second character’s name (optional)",
+        ph_second_hero_name: "You may leave this empty",
+        hint_second_hero_name: "If empty, the second character will not be added.",
+
+        label_second_hero_mode: "Second character appearance",
+        second_mode_preset_title: "Pick a character",
+        second_mode_preset_desc: "6 ready presets",
+        second_mode_custom_title: "Custom",
+        second_mode_custom_desc: "Short questionnaire",
+        second_mode_photo_title: "Upload photo",
+        second_mode_photo_desc: "Send it in chat after the form",
+        second_presets_title: "Ready characters",
+        second_custom_title: "Custom (short)",
+
+        preset_foxik_name: "Fox cub Foxik",
+        preset_foxik_desc: "Fast and curious; loves riddles and always offers plan A and plan B",
+        preset_tikhonya_name: "Owl Tikhonya",
+        preset_tikhonya_desc: "Calm and observant; explains complex things simply",
+        preset_bublik_name: "Puppy Bublik",
+        preset_bublik_desc: "Kind and loyal; supports you when you’re scared or upset",
+        preset_pixel_name: "Robot Pixel",
+        preset_pixel_desc: "Inventive helper; builds maps and useful gadgets",
+        preset_iskrik_name: "Little dragon Iskrik",
+        preset_iskrik_desc: "Harmless; “warms up” courage and lifts the mood",
+        preset_puzyrek_name: "Seahorse Puzyrek",
+        preset_puzyrek_desc: "Playful; knows sea secrets and always finds a way out",
+
+        label_second_custom_type: "Character type",
+        opt_second_type_animal: "Animal",
+        opt_second_type_human: "Human",
+        opt_second_type_toy: "Toy",
+        opt_second_type_fantasy: "Fantasy creature",
+        opt_second_type_robot: "Robot",
+        opt_second_type_animated: "Animated object",
+        opt_other: "Other",
+        label_second_custom_role: "Key role",
+        opt_role_helper: "Helper",
+        opt_role_friend: "Friend",
+        opt_role_mentor: "Mentor",
+        opt_role_companion: "Companion",
+        opt_role_wise: "Wise advisor",
+        opt_role_comic: "Comic character",
+        label_second_custom_type_other: "Specify type",
+        ph_second_custom_type_other: "For example, a little cloud",
+        label_second_traits: "3 traits (exactly three)",
+        ph_trait_1: "brave",
+        ph_trait_2: "kind",
+        ph_trait_3: "curious",
+        label_second_markers: "Visual markers (2–3)",
+        ph_marker_1: "blue hat",
+        ph_marker_2: "round glasses",
+        ph_marker_3: "small backpack (opt.)",
+        label_second_unique_prop: "Unique prop (one item, optional)",
+        ph_second_unique_prop: "For example, a compass",
+
+        label_setting_mode: "Setting *",
+        setting_mode_preset_title: "Pick a place",
+        setting_mode_preset_desc: "6 presets",
+        setting_mode_custom_title: "Personalised place",
+        setting_mode_custom_desc: "Type, time, season, details",
+        setting_presets_title: "Preset places",
+        setting_custom_title: "Personalised place",
+
+        place_fun_yard_name: "Playful yard",
+        place_fun_yard_desc: "Playground / yard / kindergarten",
+        place_warm_home_name: "Warm home",
+        place_warm_home_desc: "Home and family life",
+        place_city_road_name: "City road",
+        place_city_road_desc: "Street and transport",
+        place_park_nature_name: "Park and nature",
+        place_park_nature_desc: "Park / eco trail / riverside",
+        place_wonder_lab_name: "Wonder lab",
+        place_wonder_lab_desc: "Workshop / club / lab",
+        place_book_house_name: "House of books",
+        place_book_house_desc: "Library / books",
+
+        label_setting_custom_type: "Place type",
+        opt_place_home: "Home",
+        opt_place_playground: "Playground",
+        opt_place_school: "Nursery or school",
+        opt_place_park: "Park or forest",
+        opt_place_city: "City",
+        label_setting_type_other: "Specify type",
+        ph_setting_type_other: "For example, an aquarium",
+        label_setting_time: "Time of day",
+        opt_time_morning: "Morning",
+        opt_time_day: "Day",
+        opt_time_evening: "Evening",
+        label_setting_season: "Season",
+        opt_season_spring: "Spring",
+        opt_season_summer: "Summer",
+        opt_season_autumn: "Autumn",
+        opt_season_winter: "Winter",
+        label_setting_details: "Three place details",
+        hint_setting_details: "For example: “blue door, starry carpet, big ficus”",
+        ph_setting_detail_1: "blue door",
+        ph_setting_detail_2: "starry carpet",
+        ph_setting_detail_3: "big ficus",
+        label_setting_realism: "Realism",
+        opt_realism_life: "Like real life",
+        opt_realism_fairy: "Slightly fairy, but recognisable",
+
+        label_age_group: "Age group *",
+        opt_age_0_3: "0–3",
+        opt_age_4_6: "4–6",
+        opt_age_7_12: "7–12",
+        opt_age_12_16: "12–16",
+        opt_age_16_plus: "16+",
+
+        label_narrative_style: "Narrative style *",
+        opt_style_calm: "Gentle, meditative",
+        opt_style_adventure: "Adventurous",
+        opt_style_mystery: "Mysterious",
+        opt_style_humor: "Humorous",
+        opt_style_lyric: "Lyrical",
+
+        label_moral_theme: "Educational plot *",
+        opt_moral_kindness_help: "Kindness and helping others",
+        opt_moral_friendship: "Power of friendship",
+        opt_moral_honesty: "Honesty and trust",
+        opt_moral_differences: "Accepting differences",
+        opt_moral_mistakes: "Admitting mistakes",
+        opt_moral_patience: "Patience and perseverance",
+        opt_moral_nature: "Caring for nature",
+        opt_moral_safety: "Safety and caution",
+        opt_moral_respect: "Respect for parents and adults",
+        opt_moral_sharing: "Sharing",
+        opt_moral_independence: "Independence and responsibility",
+        opt_moral_emotions: "Emotions and talking about them",
+        opt_moral_bullying: "Standing up to bullying",
+        opt_moral_work: "Value of work",
+        opt_moral_tidiness: "Tidiness and order",
+        opt_moral_gadgets: "Moderation with gadgets",
+        opt_moral_gratitude: "Gratitude",
+        opt_moral_creativity: "Imagination and creativity",
+
+        label_illustration_style: "Illustration style *",
+        opt_ill_semi_realism: "Semi-realistic storybook",
+        opt_ill_3d: "3D cartoon",
+        opt_ill_watercolor_ink: "Watercolor + ink",
+        opt_ill_gouache: "Gouache flat-shaded",
+        opt_ill_vector: "Clean vector",
+        opt_ill_anime: "Anime",
+
+        label_story_language: "Story language *",
+        opt_lang_ru: "Russian",
+        opt_lang_en: "English",
+
+        submit: "Create story",
+
+        alert_not_telegram: "Not opened inside Telegram",
+        alert_second_custom_invalid: "For a custom second character, fill 3 traits and at least 2 visual markers.",
+        alert_setting_custom_invalid: "For a personalised place, fill 3 details.",
+
+        note_base: "After submitting, the bot may ask for photos in the chat. Media is sent in chat; the MiniApp sends a structured JSON payload.",
+        note_will_ask: "After submission, the bot will ask for",
+        note_order: "Order: main character first, then second."
       }
     };
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const langFromUrl = urlParams.get('lang');
-    const tgLang = (tg?.initDataUnsafe?.user?.language_code || '').toLowerCase();
-    const defaultLang = langFromUrl || (tgLang.startsWith('ru') ? 'ru' : 'en');
-    let currentLang = defaultLang;
+    function t(key){
+      return (I18N[currentLang] && I18N[currentLang][key]) ? I18N[currentLang][key] : key;
+    }
 
-    function setRequiredForMainAppearance(isOn) {
-      const requiredIds = ['main_skin_tone','main_eyes_color','main_hair_color','main_hair_length','main_hair_type'];
-      requiredIds.forEach((id) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.required = Boolean(isOn);
+    function applyI18n(){
+      document.documentElement.lang = currentLang;
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        el.textContent = t(el.getAttribute('data-i18n'));
       });
-    }
-
-    function applyTranslations(lang) {
-      const t = translations[lang];
-      currentLang = lang;
-      document.documentElement.lang = lang;
-
-      document.getElementById('title').textContent = t.title;
-      document.getElementById('description').textContent = t.description;
-
-      document.getElementById('label_main_hero_name').textContent = t.main_hero_name_label;
-      document.getElementById('main_hero_name').placeholder = t.main_hero_name_placeholder;
-
-      document.getElementById('label_main_hero_appearance_mode').textContent = t.main_hero_appearance_mode_label;
-      document.getElementById('chip_main_auto_title').textContent = t.main_mode_auto_title;
-      document.getElementById('chip_main_auto_desc').textContent = t.main_mode_auto_desc;
-      document.getElementById('chip_main_select_title').textContent = t.main_mode_select_title;
-      document.getElementById('chip_main_select_desc').textContent = t.main_mode_select_desc;
-      document.getElementById('chip_main_photo_title').textContent = t.main_mode_photo_title;
-      document.getElementById('chip_main_photo_desc').textContent = t.main_mode_photo_desc;
-      document.getElementById('subtitle_main_appearance').textContent = t.main_appearance_subtitle;
-
-      document.getElementById('label_second_hero_name').textContent = t.second_hero_name_label;
-      document.getElementById('second_hero_name').placeholder = t.second_hero_name_placeholder;
-      document.getElementById('hint_second_hero_name').textContent = t.second_hero_name_hint;
-
-      document.getElementById('label_second_hero_mode').textContent = t.second_hero_mode_label;
-      document.getElementById('hint_second_hero_mode').textContent = t.second_mode_hint;
-      document.getElementById('chip_second_preset_title').textContent = t.second_mode_preset_title;
-      document.getElementById('chip_second_preset_desc').textContent = t.second_mode_preset_desc;
-      document.getElementById('chip_second_custom_title').textContent = t.second_mode_custom_title;
-      document.getElementById('chip_second_custom_desc').textContent = t.second_mode_custom_desc;
-      document.getElementById('chip_second_photo_title').textContent = t.second_mode_photo_title;
-      document.getElementById('chip_second_photo_desc').textContent = t.second_mode_photo_desc;
-      document.getElementById('subtitle_second_presets').textContent = t.second_presets_subtitle;
-      document.getElementById('subtitle_second_custom').textContent = t.second_custom_subtitle;
-
-      document.getElementById('label_setting_mode').textContent = t.setting_mode_label;
-      document.getElementById('chip_setting_preset_title').textContent = t.setting_mode_preset_title;
-      document.getElementById('chip_setting_preset_desc').textContent = t.setting_mode_preset_desc;
-      document.getElementById('chip_setting_custom_title').textContent = t.setting_mode_custom_title;
-      document.getElementById('chip_setting_custom_desc').textContent = t.setting_mode_custom_desc;
-      document.getElementById('subtitle_setting_presets').textContent = t.setting_presets_subtitle;
-      document.getElementById('subtitle_setting_custom').textContent = t.setting_custom_subtitle;
-
-      document.getElementById('label_age_group').textContent = t.age_group_label;
-      document.getElementById('label_narrative_style').textContent = t.narrative_style_label;
-      document.getElementById('label_moral_theme').textContent = t.moral_theme_label;
-      document.getElementById('label_illustration_style_id').textContent = t.illustration_style_label;
-      document.getElementById('label_language').textContent = t.language_label;
-
-      submitBtn.textContent = t.submit;
-      document.getElementById('note').textContent = t.note_base;
-
-      form.language.value = lang;
-    }
-
-    // utility: chips
-    function setActiveChip(groupEl, predicateFn) {
-      const chips = groupEl.querySelectorAll('.chip');
-      chips.forEach((chip) => chip.classList.toggle('chip--active', Boolean(predicateFn(chip))));
-    }
-
-    // utility: mode tiles (главный герой)
-    function setActiveModeTile(groupEl, predicateFn) {
-      const tiles = groupEl.querySelectorAll('.mode-tile');
-      tiles.forEach((tile) => tile.classList.toggle('mode-tile--active', Boolean(predicateFn(tile))));
-    }
-
-    applyTranslations(defaultLang);
-
-    const langButtons = document.querySelectorAll('.lang-btn');
-    langButtons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const lang = btn.dataset.lang;
-        if (lang === currentLang) return;
-        langButtons.forEach((b) => b.classList.toggle('lang-btn--active', b === btn));
-        applyTranslations(lang);
-        updateNote();
+      document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
       });
-    });
-
-    // --- main hero mode ---
-    const mainHeroModeChips = document.getElementById('mainHeroModeChips');
-    const mainHeroModeInput = document.getElementById('main_hero_appearance_mode');
-    const mainHeroAppearanceBlock = document.getElementById('mainHeroAppearanceBlock');
-
-    function applyMainHeroMode(mode) {
-      mainHeroModeInput.value = mode;
-      setActiveModeTile(mainHeroModeChips, (tile) => tile.dataset.value === mode);
-
-      const show = (mode === 'select');
-      mainHeroAppearanceBlock.classList.toggle('hidden', !show);
-      setRequiredForMainAppearance(show);
-
       updateNote();
     }
 
-    mainHeroModeChips.addEventListener('click', (e) => {
+    function setActiveLangButton(){
+      document.getElementById('btnLangRu').classList.toggle('lang-btn--active', currentLang === 'ru');
+      document.getElementById('btnLangEn').classList.toggle('lang-btn--active', currentLang === 'en');
+    }
+
+    // default UI lang: URL > Telegram profile > en
+    const urlParams = new URLSearchParams(window.location.search);
+    const langFromUrl = (urlParams.get('lang') || "").toLowerCase();
+    const tgLang = (tg?.initDataUnsafe?.user?.language_code || "").toLowerCase();
+    let currentLang = (langFromUrl === "ru" || langFromUrl === "en") ? langFromUrl : (tgLang.startsWith("ru") ? "ru" : "en");
+
+    setActiveLangButton();
+    applyI18n();
+
+    document.querySelectorAll('.lang-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        if (lang === currentLang) return;
+        currentLang = lang;
+        setActiveLangButton();
+        applyI18n();
+      });
+    });
+
+    // helpers
+    function setActiveModeTile(groupEl, value){
+      groupEl.querySelectorAll('.mode-tile').forEach((b) => b.classList.toggle('mode-tile--active', b.dataset.value === value));
+    }
+    function setActivePreset(gridEl, value){
+      gridEl.querySelectorAll('.preset-btn').forEach((b) => b.classList.toggle('preset-btn--active', b.dataset.preset === value));
+    }
+    function setActiveChip(groupEl, value){
+      groupEl.querySelectorAll('.chip').forEach((b) => b.classList.toggle('chip--active', b.dataset.value === value));
+    }
+
+    // MAIN HERO MODE
+    const mainHeroModeTiles = document.getElementById('mainHeroModeTiles');
+    const mainHeroModeInput = document.getElementById('main_hero_appearance_mode');
+    const mainHeroAppearanceBlock = document.getElementById('mainHeroAppearanceBlock');
+
+    function setRequiredMainAppearance(on){
+      const ids = ['main_skin_tone','main_eyes_color','main_hair_color','main_hair_length','main_hair_type'];
+      ids.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.required = Boolean(on);
+      });
+    }
+
+    function applyMainHeroMode(mode){
+      mainHeroModeInput.value = mode;
+      setActiveModeTile(mainHeroModeTiles, mode);
+      const show = (mode === 'select');
+      mainHeroAppearanceBlock.classList.toggle('hidden', !show);
+      setRequiredMainAppearance(show);
+      updateNote();
+    }
+
+    mainHeroModeTiles.addEventListener('click', (e) => {
       const btn = e.target.closest('.mode-tile');
       if (!btn) return;
       applyMainHeroMode(btn.dataset.value);
     });
-
-    // default main mode
     applyMainHeroMode(mainHeroModeInput.value);
 
-    // --- second hero block visibility by name ---
+    // SECOND HERO VISIBILITY + MODE
     const secondHeroNameInput = document.getElementById('second_hero_name');
-    const secondHeroBlock = document.getElementById('secondHeroBlock');
-    const secondHeroModeChips = document.getElementById('secondHeroModeChips');
+    const secondHeroAppearanceField = document.getElementById('secondHeroAppearanceField');
+    const secondHeroModeTiles = document.getElementById('secondHeroModeTiles');
     const secondHeroModeInput = document.getElementById('second_hero_mode');
-    const secondHeroPresetIdInput = document.getElementById('second_hero_preset_id');
+
     const secondHeroPresetBlock = document.getElementById('secondHeroPresetBlock');
-    const secondHeroPresetChips = document.getElementById('secondHeroPresetChips');
     const secondHeroCustomBlock = document.getElementById('secondHeroCustomBlock');
+    const secondHeroPresetGrid = document.getElementById('secondHeroPresetGrid');
+    const secondHeroPresetIdInput = document.getElementById('second_hero_preset_id');
 
-    function applySecondHeroMode(mode) {
+    function applySecondHeroMode(mode){
       secondHeroModeInput.value = mode;
-      setActiveChip(secondHeroModeChips, (chip) => chip.dataset.value === mode);
-
+      setActiveModeTile(secondHeroModeTiles, mode);
       secondHeroPresetBlock.classList.toggle('hidden', mode !== 'preset');
       secondHeroCustomBlock.classList.toggle('hidden', mode !== 'custom');
-
       updateNote();
     }
 
-    function applySecondHeroVisibility() {
-      const hasName = secondHeroNameInput.value.trim().length > 0;
-      secondHeroBlock.classList.toggle('hidden', !hasName);
-
-      if (!hasName) {
+    function applySecondHeroVisibility(){
+      const hasSecond = secondHeroNameInput.value.trim().length > 0;
+      secondHeroAppearanceField.classList.toggle('hidden', !hasSecond);
+      if (!hasSecond){
         secondHeroModeInput.value = 'none';
       } else {
         if (secondHeroModeInput.value === 'none') secondHeroModeInput.value = 'preset';
@@ -1108,19 +1566,19 @@
 
     secondHeroNameInput.addEventListener('input', applySecondHeroVisibility);
 
-    secondHeroModeChips.addEventListener('click', (e) => {
-      const btn = e.target.closest('.chip');
+    secondHeroModeTiles.addEventListener('click', (e) => {
+      const btn = e.target.closest('.mode-tile');
       if (!btn) return;
       applySecondHeroMode(btn.dataset.value);
     });
 
-    secondHeroPresetChips.addEventListener('click', (e) => {
-      const btn = e.target.closest('.chip');
+    secondHeroPresetGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.preset-btn');
       if (!btn) return;
       const preset = btn.dataset.preset;
       if (!preset) return;
       secondHeroPresetIdInput.value = preset;
-      setActiveChip(secondHeroPresetChips, (chip) => chip.dataset.preset === preset);
+      setActivePreset(secondHeroPresetGrid, preset);
     });
 
     const secondCustomType = document.getElementById('second_custom_type');
@@ -1129,45 +1587,52 @@
       secondTypeOtherWrap.classList.toggle('hidden', secondCustomType.value !== 'other');
     });
 
+    // init second hero
+    setActivePreset(secondHeroPresetGrid, secondHeroPresetIdInput.value);
     applySecondHeroVisibility();
-    setActiveChip(secondHeroPresetChips, (chip) => chip.dataset.preset === secondHeroPresetIdInput.value);
 
-    // --- setting mode ---
-    const settingModeChips = document.getElementById('settingModeChips');
+    // SETTING MODE
+    const settingModeTiles = document.getElementById('settingModeTiles');
     const settingModeInput = document.getElementById('setting_mode');
     const settingPresetIdInput = document.getElementById('setting_preset_id');
     const settingPresetBlock = document.getElementById('settingPresetBlock');
     const settingCustomBlock = document.getElementById('settingCustomBlock');
-    const settingPresetChips = document.getElementById('settingPresetChips');
+    const settingPresetGrid = document.getElementById('settingPresetGrid');
 
-    function applySettingMode(mode) {
+    function applySettingMode(mode){
       settingModeInput.value = mode;
-      setActiveChip(settingModeChips, (chip) => chip.dataset.value === mode);
+      setActiveModeTile(settingModeTiles, mode);
       settingPresetBlock.classList.toggle('hidden', mode !== 'preset');
       settingCustomBlock.classList.toggle('hidden', mode !== 'custom');
     }
 
-    settingModeChips.addEventListener('click', (e) => {
-      const btn = e.target.closest('.chip');
+    settingModeTiles.addEventListener('click', (e) => {
+      const btn = e.target.closest('.mode-tile');
       if (!btn) return;
       applySettingMode(btn.dataset.value);
     });
 
-    settingPresetChips.addEventListener('click', (e) => {
-      const btn = e.target.closest('.chip');
+    settingPresetGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.preset-btn');
       if (!btn) return;
       const preset = btn.dataset.preset;
       if (!preset) return;
       settingPresetIdInput.value = preset;
-      setActiveChip(settingPresetChips, (chip) => chip.dataset.preset === preset);
+      setActivePreset(settingPresetGrid, preset);
     });
 
-    applySettingMode(settingModeInput.value);
-
-    const settingCustomType = document.getElementById('setting_custom_type');
+    // custom place: type chips + realism chips
+    const settingTypeChips = document.getElementById('settingTypeChips');
+    const settingCustomTypeInput = document.getElementById('setting_custom_type');
     const settingTypeOtherWrap = document.getElementById('settingTypeOtherWrap');
-    settingCustomType.addEventListener('change', () => {
-      settingTypeOtherWrap.classList.toggle('hidden', settingCustomType.value !== 'other');
+
+    settingTypeChips.addEventListener('click', (e) => {
+      const btn = e.target.closest('.chip');
+      if (!btn) return;
+      const v = btn.dataset.value;
+      settingCustomTypeInput.value = v;
+      setActiveChip(settingTypeChips, v);
+      settingTypeOtherWrap.classList.toggle('hidden', v !== 'other');
     });
 
     const settingRealismChips = document.getElementById('settingRealismChips');
@@ -1177,42 +1642,15 @@
       if (!btn) return;
       const v = btn.dataset.value;
       settingRealismInput.value = v;
-      setActiveChip(settingRealismChips, (chip) => chip.dataset.value === v);
+      setActiveChip(settingRealismChips, v);
     });
 
-    function updateNote() {
-      const t = translations[currentLang];
-      const requests = [];
+    // init setting
+    setActivePreset(settingPresetGrid, settingPresetIdInput.value);
+    applySettingMode(settingModeInput.value);
 
-      if (mainHeroModeInput.value === 'photo') {
-        requests.push(currentLang === 'ru' ? 'фото главного героя' : 'main character photo');
-      }
-
-      const hasSecond = secondHeroNameInput.value.trim().length > 0;
-      const secondMode = hasSecond ? secondHeroModeInput.value : 'none';
-      if (secondMode === 'photo') {
-        requests.push(currentLang === 'ru' ? 'фото второго героя' : 'second character photo');
-      }
-
-      if (requests.length === 0) {
-        document.getElementById('note').textContent = t.note_base;
-        return;
-      }
-
-      const orderHintRu = 'Порядок запроса: сначала главный герой, затем второй.';
-      const orderHintEn = 'Request order: main character first, then second.';
-      const list = requests.join(', ');
-
-      document.getElementById('note').textContent =
-        t.note_base + ' ' +
-        (currentLang === 'ru'
-          ? `После отправки формы бот запросит: ${list}. ${orderHintRu}`
-          : `After submission, the bot will ask for: ${list}. ${orderHintEn}`);
-    }
-
-    updateNote();
-
-    function buildPostSubmitPhotoRequests() {
+    // NOTE (dynamic photo requests)
+    function buildPostSubmitPhotoRequests(){
       const arr = [];
       if (mainHeroModeInput.value === 'photo') arr.push('main_hero');
 
@@ -1223,7 +1661,22 @@
       return arr;
     }
 
-    function validateSecondHeroCustomIfNeeded() {
+    function updateNote(){
+      const requests = buildPostSubmitPhotoRequests();
+      if (requests.length === 0){
+        noteEl.textContent = t('note_base');
+        return;
+      }
+      const mapRuEn = {
+        main_hero: (currentLang === 'ru') ? "фото главного героя" : "main character photo",
+        second_hero: (currentLang === 'ru') ? "фото второго героя" : "second character photo"
+      };
+      const list = requests.map((k) => mapRuEn[k]).join(", ");
+      noteEl.textContent = `${t('note_base')} ${t('note_will_ask')}: ${list}. ${t('note_order')}`;
+    }
+
+    // validations
+    function validateSecondHeroCustomIfNeeded(){
       const hasSecond = secondHeroNameInput.value.trim().length > 0;
       if (!hasSecond) return true;
       if (secondHeroModeInput.value !== 'custom') return true;
@@ -1238,7 +1691,7 @@
       return Boolean(trait1 && trait2 && trait3 && m1 && m2);
     }
 
-    function validateSettingCustomIfNeeded() {
+    function validateSettingCustomIfNeeded(){
       if (settingModeInput.value !== 'custom') return true;
       const d1 = document.getElementById('setting_detail_1').value.trim();
       const d2 = document.getElementById('setting_detail_2').value.trim();
@@ -1246,59 +1699,52 @@
       return Boolean(d1 && d2 && d3);
     }
 
+    // SUBMIT
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       submitBtn.disabled = true;
 
       if (!isTelegramWebApp) {
-        alert(currentLang === 'ru' ? 'Открыто не внутри Telegram' : 'Not opened inside Telegram');
+        alert(t('alert_not_telegram'));
         submitBtn.disabled = false;
         return;
       }
 
-      if (!validateSecondHeroCustomIfNeeded()) {
-        alert(currentLang === 'ru'
-          ? 'Для персонального второго героя заполните 3 характеристики и минимум 2 визуальных маркера.'
-          : 'For a custom second character, fill 3 traits and at least 2 visual markers.');
+      if (!validateSecondHeroCustomIfNeeded()){
+        alert(t('alert_second_custom_invalid'));
         submitBtn.disabled = false;
         return;
       }
 
-      if (!validateSettingCustomIfNeeded()) {
-        alert(currentLang === 'ru'
-          ? 'Для персонифицированного места заполните 3 детали.'
-          : 'For a personalised place, fill 3 details.');
+      if (!validateSettingCustomIfNeeded()){
+        alert(t('alert_setting_custom_invalid'));
         submitBtn.disabled = false;
         return;
       }
 
       const mainMode = mainHeroModeInput.value;
-
-      const mainHeroAppearance =
-        (mainMode === 'select')
-          ? {
-              age_years: document.getElementById('main_age_years').value.trim() || null,
-              gender: document.getElementById('main_gender').value,
-              skin_tone: document.getElementById('main_skin_tone').value,
-              face_shape: document.getElementById('main_face_shape').value,
-              face_accent: document.getElementById('main_face_accent').value.trim() || null,
-              eyes_color: document.getElementById('main_eyes_color').value,
-              eyes_shape: document.getElementById('main_eyes_shape').value,
-              eyes_size: document.getElementById('main_eyes_size').value,
-              hair_color: document.getElementById('main_hair_color').value,
-              hair_length: document.getElementById('main_hair_length').value,
-              hair_type: document.getElementById('main_hair_type').value,
-              hair_density: document.getElementById('main_hair_density').value,
-              bangs: document.getElementById('main_bangs').value,
-              parting: document.getElementById('main_parting').value,
-              nose: document.getElementById('main_nose').value,
-              lips: document.getElementById('main_lips').value,
-              body_type: document.getElementById('main_body_type').value,
-              height_vs_peers: document.getElementById('main_height_vs_peers').value,
-              special_features: document.getElementById('main_special_features').value.trim() || null,
-              signature_look: document.getElementById('main_signature_look').value.trim() || null
-            }
-          : null;
+      const mainHeroAppearance = (mainMode === 'select') ? {
+        age_years: document.getElementById('main_age_years').value.trim() || null,
+        gender: document.getElementById('main_gender').value,
+        skin_tone: document.getElementById('main_skin_tone').value,
+        face_shape: document.getElementById('main_face_shape').value,
+        face_accent: document.getElementById('main_face_accent').value.trim() || null,
+        eyes_color: document.getElementById('main_eyes_color').value,
+        eyes_shape: document.getElementById('main_eyes_shape').value,
+        eyes_size: document.getElementById('main_eyes_size').value,
+        hair_color: document.getElementById('main_hair_color').value,
+        hair_length: document.getElementById('main_hair_length').value,
+        hair_type: document.getElementById('main_hair_type').value,
+        hair_density: document.getElementById('main_hair_density').value,
+        bangs: document.getElementById('main_bangs').value,
+        parting: document.getElementById('main_parting').value,
+        nose: document.getElementById('main_nose').value,
+        lips: document.getElementById('main_lips').value,
+        body_type: document.getElementById('main_body_type').value,
+        height_vs_peers: document.getElementById('main_height_vs_peers').value,
+        special_features: document.getElementById('main_special_features').value.trim() || null,
+        signature_look: document.getElementById('main_signature_look').value.trim() || null
+      } : null;
 
       const secondName = secondHeroNameInput.value.trim() || null;
       const hasSecond = Boolean(secondName);
@@ -1307,17 +1753,14 @@
       let secondHeroPresetId = null;
       let secondHeroCustom = null;
 
-      if (hasSecond && secondMode === 'preset') {
+      if (hasSecond && secondMode === 'preset'){
         secondHeroPresetId = secondHeroPresetIdInput.value;
       }
-
-      if (hasSecond && secondMode === 'custom') {
+      if (hasSecond && secondMode === 'custom'){
         const type = document.getElementById('second_custom_type').value;
         secondHeroCustom = {
           type,
-          type_other_text: type === 'other'
-            ? (document.getElementById('second_custom_type_other_text').value.trim() || null)
-            : null,
+          type_other_text: (type === 'other') ? (document.getElementById('second_custom_type_other_text').value.trim() || null) : null,
           role: document.getElementById('second_custom_role').value,
           traits: [
             document.getElementById('second_trait_1').value.trim(),
@@ -1337,15 +1780,13 @@
       let settingPresetId = null;
       let settingCustom = null;
 
-      if (settingMode === 'preset') {
+      if (settingMode === 'preset'){
         settingPresetId = settingPresetIdInput.value;
       } else {
-        const placeType = document.getElementById('setting_custom_type').value;
+        const placeType = settingCustomTypeInput.value;
         settingCustom = {
           type: placeType,
-          type_other_text: placeType === 'other'
-            ? (document.getElementById('setting_custom_type_other_text').value.trim() || null)
-            : null,
+          type_other_text: (placeType === 'other') ? (document.getElementById('setting_custom_type_other_text').value.trim() || null) : null,
           time_of_day: document.getElementById('setting_custom_time').value,
           season: document.getElementById('setting_custom_season').value,
           details: [
@@ -1353,7 +1794,7 @@
             document.getElementById('setting_detail_2').value.trim(),
             document.getElementById('setting_detail_3').value.trim()
           ],
-          realism: document.getElementById('setting_custom_realism').value
+          realism: settingRealismInput.value
         };
       }
 
@@ -1396,13 +1837,15 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-
         tg.close();
       } catch (err) {
         console.error(err);
         submitBtn.disabled = false;
       }
     });
+
+    // initial note
+    updateNote();
   </script>
 </body>
 </html>
