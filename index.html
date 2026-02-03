@@ -1632,10 +1632,9 @@
             }
           }
 
-          // post_submit_photo_requests
-          var postSubmit = [];
-          if (mainHeroAppearanceMode === 'photo') postSubmit.push('main_hero');
-          if (hasSecond && secondHeroMode === 'photo') postSubmit.push('second_hero');
+         // photo flags (instead of post_submit_photo_requests array)
+          var needMainHeroPhoto = (mainHeroAppearanceMode === 'photo');
+          var needSecondHeroPhoto = (hasSecond && secondHeroMode === 'photo');
 
           // main hero appearance object (only if select)
           function val(id) {
@@ -1726,7 +1725,8 @@
               language: val('language'),
 
               ui_language: currentLang,
-              post_submit_photo_requests: postSubmit
+              needMainHeroPhoto: needMainHeroPhoto,
+              needSecondHeroPhoto: needSecondHeroPhoto
             },
             telegram: {
               initData: tg.initData,
