@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
+    
     :root {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: #0f172a;
@@ -296,6 +297,27 @@
       border: 1px solid rgba(239,68,68,0.35);
       color: #7f1d1d;
     }
+    /* FIX: RU-тексты в квадратных плитках + узкие экраны Telegram */
+.mode-grid > * { min-width: 0; }
+
+.mode-tile__title {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.mode-tile { overflow: hidden; }
+
+@media (max-width: 380px) {
+  .mode-grid--3 { grid-template-columns: repeat(2, 1fr); }
+  .mode-tile {
+    aspect-ratio: auto;
+    min-height: 72px;
+    padding: 10px 8px;
+  }
+  .mode-tile__title { font-size: 11px; }
+}
   </style>
 </head>
 
@@ -675,12 +697,7 @@
             </div>
           </div>
 
-          <div class="inline-alert hidden" id="secondHeroNeedNameAlert" data-i18n="second_hero_need_name_alert">
-            Сначала укажите имя второго героя.
-          </div>
-        </div>
-
-        <!-- P.5 setting mode -->
+          <!-- P.5 setting mode -->
         <div class="field">
           <label data-i18n="setting_mode_label">Место действия *</label>
 
@@ -846,14 +863,14 @@
         <!-- P.9 illustration style -->
         <div class="field">
           <label for="illustration_style_id" data-i18n="illustration_style_label">Стиль иллюстраций *</label>
-          <select id="illustration_style_id" name="illustration_style_id" required>
-            <option value="semi_realistic_book" data-i18n="ill_semi_realistic">Полу-реалистичная книжная иллюстрация</option>
-            <option value="watercolor_ink" data-i18n="ill_watercolor_ink">Акварель + тушь</option>
-            <option value="gouache_flat" data-i18n="ill_gouache">Гуашь / плоская иллюстрация</option>
-            <option value="clean_vector" data-i18n="ill_vector">Векторная иллюстрация</option>
-            <option value="claymation" data-i18n="ill_clay">Пластилиновая стилизация</option>
-            <option value="anime" data-i18n="ill_anime">Аниме</option>
-          </select>
+         <select id="illustration_style_id" name="illustration_style_id" required>
+           <option value="semi_realistic" data-i18n="ill_semi_realistic">Полу-реалистичная</option>
+           <option value="watercolor_ink" data-i18n="ill_watercolor_ink">Акварель+тушь</option>
+           <option value="anime" data-i18n="ill_anime">Аниме</option>
+           <option value="vector" data-i18n="ill_vector">Векторная иллюстрация</option>
+           <option value="gouache" data-i18n="ill_gouache">Гуашь</option>
+           <option value="cartoon_3d" data-i18n="ill_3d_cartoon">3Д мульт</option>
+         </select>
         </div>
 
         <!-- P.10 language -->
@@ -1150,11 +1167,11 @@
           m_imagination_creativity: 'Воображение и творчество',
 
           illustration_style_label: 'Стиль иллюстраций *',
-          ill_semi_realistic: 'Полу-реалистичная книжная иллюстрация',
-          ill_watercolor_ink: 'Акварель + тушь',
-          ill_gouache: 'Гуашь / плоская иллюстрация',
+          ill_semi_realistic: 'Полу-реалистичная',
+          ill_watercolor_ink: 'Акварель+тушь',
+          ill_gouache: 'Гуашь',
           ill_vector: 'Векторная иллюстрация',
-          ill_clay: 'Пластилиновая стилизация',
+          ill_3d_cartoon: '3Д мульт',
           ill_anime: 'Аниме',
 
           language_label: 'Язык сказки *',
@@ -1367,11 +1384,11 @@
           m_imagination_creativity: 'Imagination and creativity',
 
           illustration_style_label: 'Illustration style *',
-          ill_semi_realistic: 'Semi-realistic book illustration',
-          ill_watercolor_ink: 'Watercolor + ink',
-          ill_gouache: 'Gouache / flat shading',
-          ill_vector: 'Clean vector',
-          ill_clay: 'Claymation style',
+          ill_semi_realistic: 'Semi-realistic',
+          ill_watercolor_ink: 'Watercolor+ink',
+          ill_gouache: 'Gouache',
+          ill_vector: 'Vector illustration',
+          ill_3d_cartoon: '3D cartoon',
           ill_anime: 'Anime',
 
           language_label: 'Story language *',
@@ -1445,28 +1462,21 @@
       }
 
       function updateSecondHeroPanels() {
-        hide(secondHeroNeedNameAlert);
-        hide(photoAlertSecond);
-        hide(secondHeroPresetPanel);
-        hide(secondHeroCustomPanel);
+  hide(secondHeroNeedNameAlert);
+  hide(photoAlertSecond);
+  hide(secondHeroPresetPanel);
+  hide(secondHeroCustomPanel);
 
-        var hasName = !!(secondHeroName && secondHeroName.value && secondHeroName.value.trim().length > 0);
-
-        if (!hasName) {
-          secondHeroMode = 'none';
-          setActiveTile(secondHeroModeTiles, null);
-          secondHeroPresetId = null;
-          return;
-        }
-
-        if (secondHeroMode === 'photo') {
-          show(photoAlertSecond);
-        } else if (secondHeroMode === 'preset') {
-          show(secondHeroPresetPanel);
-        } else if (secondHeroMode === 'custom') {
-          show(secondHeroCustomPanel);
-        }
-      }
+  // Имя теперь НЕ влияет на доступность выбора.
+  // Панели показываются только по выбранному secondHeroMode.
+  if (secondHeroMode === 'photo') {
+    show(photoAlertSecond);
+  } else if (secondHeroMode === 'preset') {
+    show(secondHeroPresetPanel);
+  } else if (secondHeroMode === 'custom') {
+    show(secondHeroCustomPanel);
+  }
+}
 
       function updateSettingPanels() {
         hide(settingNeedChoiceAlert);
@@ -1516,36 +1526,25 @@
         }
 
         // Second hero name change
-        if (secondHeroName) {
-          secondHeroName.addEventListener('input', function () {
-            // if name was removed -> reset
-            if (!secondHeroName.value || secondHeroName.value.trim().length === 0) {
-              secondHeroMode = 'none';
-              secondHeroPresetId = null;
-              setActiveTile(secondHeroModeTiles, null);
-            }
-            updateSecondHeroPanels();
-          });
-        }
+if (secondHeroName) {
+  secondHeroName.addEventListener('input', function () {
+    // Имя не управляет режимом. Ничего не сбрасываем.
+    updateSecondHeroPanels();
+  });
+}
 
         // Second hero mode tiles
-        if (secondHeroModeTiles) {
-          secondHeroModeTiles.addEventListener('click', function (e) {
-            var tile = closestEl(e.target, '.mode-tile');
-            if (!tile) return;
+if (secondHeroModeTiles) {
+  secondHeroModeTiles.addEventListener('click', function (e) {
+    var tile = closestEl(e.target, '.mode-tile');
+    if (!tile) return;
 
-            var hasName = !!(secondHeroName && secondHeroName.value && secondHeroName.value.trim().length > 0);
-            if (!hasName) {
-              show(secondHeroNeedNameAlert);
-              return;
-            }
-
-            var mode = tile.getAttribute('data-mode'); // preset | custom | photo
-            secondHeroMode = mode;
-            setActiveTile(secondHeroModeTiles, secondHeroMode);
-            updateSecondHeroPanels();
-          });
-        }
+    var mode = tile.getAttribute('data-mode'); // preset | custom | photo
+    secondHeroMode = mode;
+    setActiveTile(secondHeroModeTiles, secondHeroMode);
+    updateSecondHeroPanels();
+  });
+}
 
         // Second hero preset selection
         if (secondHeroPresetGrid) {
@@ -1607,14 +1606,15 @@
           }
 
           // Validation: second hero requires a mode if name is provided
-          var secondName = (secondHeroName && secondHeroName.value) ? secondHeroName.value.trim() : '';
-          var hasSecond = secondName.length > 0;
+         var secondName = (secondHeroName && secondHeroName.value) ? secondHeroName.value.trim() : '';
+var hasSecond = (secondHeroMode !== 'none'); // включён, если выбран режим
 
-          if (hasSecond && (secondHeroMode === 'none')) {
-            show(secondHeroNeedNameAlert);
-            submitBtn.disabled = false;
-            return;
-          }
+// Если выбран режим preset, но не выбран сам пресет — валидируем
+if (hasSecond && secondHeroMode === 'preset' && !secondHeroPresetId) {
+  // Можно показать отдельный alert, но минимально — просто не отправляем
+  submitBtn.disabled = false;
+  return;
+}
 
           // Validation: setting must have either preset chosen or custom filled
           if (settingMode === 'preset') {
@@ -1709,7 +1709,7 @@
               main_hero_appearance_mode: mainHeroAppearanceMode,
               main_hero_appearance: mainHeroAppearance, // null if photo/auto
 
-              second_hero_name: hasSecond ? secondName : null,
+              second_hero_name: (secondName.length > 0) ? secondName : null,
               second_hero_mode: hasSecond ? secondHeroMode : 'none',
               second_hero_preset_id: (hasSecond && secondHeroMode === 'preset') ? secondHeroPresetId : null,
               second_hero_custom: (hasSecond && secondHeroMode === 'custom') ? secondHeroCustom : null,
