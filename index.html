@@ -180,6 +180,12 @@
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
+     /* Плитки без квадратного aspect-ratio (для подвыбора в "Предложить") */
+    .mode-tile--row {
+      aspect-ratio: auto;
+      min-height: 54px;
+      padding: 10px 8px;
+    }
     .mode-tile:active { transform: translateY(1px); }
     .mode-tile--active {
       border-color: rgba(99,102,241,0.9);
@@ -579,6 +585,27 @@
               </div>
             </div>
           </div>
+          <!-- Main hero auto-suggest: gender preference -->
+          <div class="subpanel hidden" id="mainHeroAutoPanel">
+            <p class="subpanel__title" data-i18n="auto_gender_title">Кого предложить?</p>
+
+            <div class="mode-grid mode-grid--3" id="mainHeroAutoGenderTiles">
+              <button type="button" class="mode-tile mode-tile--row" data-auto-gender="boy">
+                <div class="mode-tile__icon">👦</div>
+                <div class="mode-tile__title" data-i18n="auto_gender_boy">Мальчик</div>
+              </button>
+
+              <button type="button" class="mode-tile mode-tile--row" data-auto-gender="girl">
+                <div class="mode-tile__icon">👧</div>
+                <div class="mode-tile__title" data-i18n="auto_gender_girl">Девочка</div>
+              </button>
+
+              <button type="button" class="mode-tile mode-tile--row" data-auto-gender="any">
+                <div class="mode-tile__icon">🎲</div>
+                <div class="mode-tile__title" data-i18n="auto_gender_any">Сюрприз</div>
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- P.3 second hero name -->
@@ -925,6 +952,8 @@
       var mainHeroModeTiles = document.getElementById('mainHeroModeTiles');
       var mainHeroSelectPanel = document.getElementById('mainHeroSelectPanel');
       var photoAlertMain = document.getElementById('photoAlertMain');
+      var mainHeroAutoPanel = document.getElementById('mainHeroAutoPanel');
+      var mainHeroAutoGenderTiles = document.getElementById('mainHeroAutoGenderTiles');
 
       var secondHeroName = document.getElementById('second_hero_name');
       var secondHeroModeTiles = document.getElementById('secondHeroModeTiles');
@@ -957,6 +986,7 @@
       var currentLang = (langFromUrl === 'ru') ? 'ru' : 'en';
 
       var mainHeroAppearanceMode = 'auto'; // photo | select | auto
+      var mainHeroAutoGender = 'any';      // boy | girl | any
       var secondHeroMode = 'none';         // none | preset | custom | photo
       var secondHeroPresetId = null;
 
@@ -973,6 +1003,10 @@
           mode_photo: 'Загрузить фото',
           mode_select_appearance: 'Выбрать внешность',
           mode_auto: 'Предложить',
+          auto_gender_title: 'Кого предложить?',
+          auto_gender_boy: 'Мальчик',
+          auto_gender_girl: 'Девочка',
+          auto_gender_any: 'Сюрприз',
           photo_alert_main: 'После отправки формы бот попросит прислать фото в чате.',
           appearance_panel_title: 'Параметры внешности',
           age_years_label: 'Возраст (цифрой)',
@@ -1190,6 +1224,10 @@
           mode_photo: 'Upload photo',
           mode_select_appearance: 'Choose appearance',
           mode_auto: 'Auto-suggest',
+          auto_gender_title: 'Who should I suggest?',
+          auto_gender_boy: 'Boy',
+          auto_gender_girl: 'Girl',
+          auto_gender_any: 'Surprise me',
           photo_alert_main: 'After you submit the form, the bot will ask you to send a photo in the chat.',
           appearance_panel_title: 'Appearance details',
           age_years_label: 'Age (number)',
@@ -1440,6 +1478,14 @@
           tiles[i].classList.toggle('mode-tile--active', m === mode);
         }
       }
+      function setActiveAutoGender(container, value) {
+        if (!container) return;
+        var tiles = container.querySelectorAll('.mode-tile');
+        for (var i = 0; i < tiles.length; i++) {
+          var v = tiles[i].getAttribute('data-auto-gender');
+          tiles[i].classList.toggle('mode-tile--active', v === value);
+        }
+      }
 
       function setActivePreset(container, attrName, value) {
         if (!container) return;
@@ -1453,11 +1499,15 @@
       function updateMainHeroPanels() {
         hide(photoAlertMain);
         hide(mainHeroSelectPanel);
+        hide(mainHeroAutoPanel);
 
         if (mainHeroAppearanceMode === 'photo') {
           show(photoAlertMain);
         } else if (mainHeroAppearanceMode === 'select') {
           show(mainHeroSelectPanel);
+        } else if (mainHeroAppearanceMode === 'auto') {
+          show(mainHeroAutoPanel);
+          setActiveAutoGender(mainHeroAutoGenderTiles, mainHeroAutoGender);
         }
       }
 
@@ -1524,7 +1574,15 @@
             updateMainHeroPanels();
           });
         }
-
+        if (mainHeroAutoGenderTiles) {
+          mainHeroAutoGenderTiles.addEventListener('click', function (e) {
+            var tile = closestEl(e.target, '.mode-tile');
+            if (!tile) return;
+            var v = tile.getAttribute('data-auto-gender'); // boy | girl | any
+            mainHeroAutoGender = v;
+            setActiveAutoGender(mainHeroAutoGenderTiles, mainHeroAutoGender);
+          });
+        }
         // Second hero name change
 if (secondHeroName) {
   secondHeroName.addEventListener('input', function () {
@@ -1707,6 +1765,7 @@ if (hasSecond && secondHeroMode === 'preset' && !secondHeroPresetId) {
             form_data: {
               main_hero_name: valTrim('main_hero_name'),
               main_hero_appearance_mode: mainHeroAppearanceMode,
+              main_hero_auto_gender: (mainHeroAppearanceMode === 'auto') ? mainHeroAutoGender : null,
               main_hero_appearance: mainHeroAppearance, // null if photo/auto
 
               second_hero_name: (secondName.length > 0) ? secondName : null,
