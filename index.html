@@ -940,7 +940,7 @@
       // --- Telegram ---
       var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
       var isTelegramWebApp = !!(tg && (tg.initData || tg.initDataUnsafe));
-      var WEBHOOK_URL = 'https://oglob.app.n8n.cloud/webhook/telegram-puzirek';
+      var WEBHOOK_URL = null; // будет назначен ниже в зависимости от mode
 
       // --- DOM ---
       var form = document.getElementById('storyForm');
@@ -984,6 +984,12 @@
       var urlParams = new URLSearchParams(window.location.search);
       var langFromUrl = urlParams.get('lang') || 'en';
       var currentLang = (langFromUrl === 'ru') ? 'ru' : 'en';
+
+      // --- n8n execution mode routing (test vs production) ---
+      var modeFromUrl = urlParams.get('mode'); // ожидаем 'test' в тестовом режиме
+      var url_test = 'https://oglob.app.n8n.cloud/webhook-test/telegram-puzirek';
+      var url_main = 'https://oglob.app.n8n.cloud/webhook/telegram-puzirek';
+      WEBHOOK_URL = (modeFromUrl === 'test') ? url_test : url_main;
 
       var mainHeroAppearanceMode = 'auto'; // photo | select | auto
       var mainHeroAutoGender = 'any';      // boy | girl | any
