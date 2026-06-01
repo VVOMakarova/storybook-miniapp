@@ -371,6 +371,97 @@
       }
       .mode-tile__title { font-size: 11px; }
     }
+
+    /* ===== Two-mode order flow ===== */
+    .mode-switch { margin-bottom: 18px; }
+    .mode-switch__q {
+      font-family: "Spectral SC", "Spectral", serif;
+      font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--depth-deep); margin: 0 0 10px;
+    }
+    .mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 380px) { .mode-cards { grid-template-columns: 1fr; } }
+    .mode-card {
+      display: flex; flex-direction: column; gap: 6px; text-align: left;
+      border: 1px solid var(--hairline); background: var(--parchment);
+      border-radius: 14px; padding: 14px; cursor: pointer; color: var(--chart-ink);
+      transition: border-color .18s var(--ease-expo), box-shadow .18s var(--ease-expo), background .18s var(--ease-expo), transform .14s var(--ease-expo);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mode-card:active { transform: translateY(1px); }
+    .mode-card--active {
+      border-color: var(--depth-mid); background: oklch(90% 0.06 210);
+      box-shadow: 0 6px 16px oklch(38% 0.08 226 / 0.16);
+    }
+    .mode-card__title {
+      font-family: "Spectral SC", "Spectral", serif; font-weight: 600; font-size: 14px;
+      letter-spacing: .04em; text-transform: uppercase; color: var(--depth-deep);
+    }
+    .mode-card__desc { font-size: 12px; line-height: 1.4; color: var(--chart-ink-mid); }
+    .mode-card__badge {
+      align-self: flex-start; margin-top: 2px; font-size: 10.5px; letter-spacing: .06em;
+      text-transform: uppercase; background: oklch(92% 0.05 210); color: var(--depth-deep);
+      border: 1px solid var(--hairline); border-radius: 999px; padding: 3px 9px;
+    }
+    .mode-card--active .mode-card__badge { background: var(--depth-deep); color: var(--parchment); border-color: var(--depth-deep); }
+
+    .quick-sub { margin-top: 6px !important; font-style: italic; color: var(--chart-ink-faint) !important; font-size: 12.5px !important; }
+
+    .progress-strip { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .progress-chip {
+      font-family: "Spectral SC", "Spectral", serif; font-size: 10.5px; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--chart-ink-mid); background: oklch(96% 0.02 210);
+      border: 1px solid var(--hairline); border-radius: 999px; padding: 4px 11px;
+    }
+
+    .step-label {
+      font-family: "Spectral SC", "Spectral", serif; font-size: 12px; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--depth-deep);
+      margin: 20px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--hairline);
+    }
+    .form-section:first-of-type .step-label { margin-top: 4px; }
+
+    .collapse-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-top: 10px; padding: 12px 14px; border-radius: 12px;
+      background: oklch(96% 0.02 210); border: 1px dashed var(--hairline);
+    }
+    .collapse-row__text { font-size: 12.5px; line-height: 1.4; color: var(--chart-ink-mid); }
+    .collapse-toggle {
+      flex: 0 0 auto; font-family: "Spectral SC", "Spectral", serif; font-size: 11px;
+      letter-spacing: .05em; text-transform: uppercase; cursor: pointer; white-space: nowrap;
+      background: var(--parchment); color: var(--depth-deep);
+      border: 1px solid var(--depth-mid); border-radius: 999px; padding: 7px 13px;
+      transition: background .18s var(--ease-expo), color .18s var(--ease-expo);
+    }
+    .collapse-toggle:hover { background: var(--depth-deep); color: var(--parchment); }
+
+    /* mode-driven visibility */
+    .mode-quick .director-only { display: none !important; }
+    .mode-director .quick-only { display: none !important; }
+    .mode-quick .collapsible .collapse-body { display: none; }
+    .mode-quick .collapsible.is-open .collapse-body { display: block; }
+    .mode-quick .collapsible.is-open .collapse-row { display: none; }
+    .mode-director .collapsible .collapse-row { display: none; }
+    .mode-director .collapsible .collapse-body { display: block; }
+
+    /* contact */
+    .contact-options { display: flex; gap: 18px; margin-top: 4px; flex-wrap: wrap; }
+    .contact-opt { display: flex; align-items: center; gap: 7px; font-size: 13.5px; color: var(--chart-ink); cursor: pointer; }
+    .contact-opt input { width: auto; margin: 0; box-shadow: none; accent-color: var(--depth-deep); }
+
+    /* summary */
+    .summary {
+      margin-top: 18px; padding: 16px; border-radius: 14px;
+      background: oklch(92% 0.045 205 / 0.6); border: 1px solid var(--hairline);
+    }
+    .summary__title {
+      font-family: "Spectral SC", "Spectral", serif; font-size: 12px; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--depth-deep); margin: 0 0 10px;
+    }
+    .summary__list { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 7px 16px; }
+    .summary__list dt { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--chart-ink-faint); align-self: baseline; }
+    .summary__list dd { margin: 0; font-size: 13.5px; line-height: 1.35; color: var(--chart-ink); }
   </style>
 </head>
 
@@ -397,34 +488,72 @@
         <div class="hero-text">
           <h1 id="title" data-i18n="title">Создать сказку</h1>
           <p class="description" id="description" data-i18n="description">
-            Заполните параметры — бот сгенерирует персональную сказку и отправит её в чат в виде PDF-книги.
+            Выберите главное — имя, возраст, смысл и стиль. Остальное Пузырёк может предложить сам. Если хотите, откройте режиссёрский режим и настройте всё подробно.
+          </p>
+          <p class="description quick-sub quick-only" id="quickSub" data-i18n="quick_subtitle">
+            Можно без фото. Можно без долгой анкеты. Подробности — только по желанию.
           </p>
         </div>
       </div>
 
       <form id="storyForm">
-        <!-- P.1 -->
-        <div class="field">
-          <label for="main_hero_name" data-i18n="main_hero_name_label">Имя главного героя *</label>
-          <input id="main_hero_name" name="main_hero_name" required />
+
+        <!-- MODE SWITCH -->
+        <div class="mode-switch" id="modeSwitch">
+          <p class="mode-switch__q" data-i18n="order_flow_question">Как хотите создать сказку?</p>
+          <div class="mode-cards">
+            <button type="button" class="mode-card mode-card--active" data-form-mode="quick">
+              <span class="mode-card__title" data-i18n="quick_card_title">Быстрый заказ</span>
+              <span class="mode-card__desc" data-i18n="quick_card_desc">Минимум вопросов. Пузырёк сам предложит детали, а вы получите готовую PDF-сказку.</span>
+              <span class="mode-card__badge" data-i18n="quick_card_badge">≈ 2 минуты</span>
+            </button>
+            <button type="button" class="mode-card" data-form-mode="director">
+              <span class="mode-card__title" data-i18n="director_card_title">Режиссёрский режим</span>
+              <span class="mode-card__desc" data-i18n="director_card_desc">Подробная настройка героя, внешности, места, второго персонажа и атмосферы.</span>
+              <span class="mode-card__badge" data-i18n="director_card_badge">Максимальная персонализация</span>
+            </button>
+          </div>
         </div>
 
+        <!-- PROGRESS (quick only) -->
+        <div class="progress-strip quick-only" id="progressStrip">
+          <span class="progress-chip" data-i18n="progress_hero">1 из 3 · Герой</span>
+          <span class="progress-chip" data-i18n="progress_story">2 из 3 · История</span>
+          <span class="progress-chip" data-i18n="progress_receive">3 из 3 · Получение</span>
+        </div>
+
+        <!-- ===== STEP 1. HERO ===== -->
+        <div class="form-section" data-section="hero">
+          <p class="step-label director-only" data-i18n="step1">Шаг 1. Главный герой</p>
+
+          <!-- P.1 -->
+          <div class="field">
+            <label for="main_hero_name" data-i18n="main_hero_name_label">Имя главного героя *</label>
+            <input id="main_hero_name" name="main_hero_name" required />
+          </div>
+
         <!-- P.2 main hero appearance mode -->
-        <div class="field" id="mainHeroAppearanceBlock">
+        <div class="field collapsible" id="mainHeroAppearanceBlock">
           <label data-i18n="main_hero_appearance_label">Внешность главного героя *</label>
 
+          <div class="collapse-row" data-collapse-row="hero">
+            <span class="collapse-row__text" data-i18n="collapse_hero_text">Пузырёк сам предложит образ героя. Можно настроить.</span>
+            <button type="button" class="collapse-toggle" data-collapse-toggle="hero" data-i18n="collapse_hero_btn">Настроить героя</button>
+          </div>
+
+          <div class="collapse-body" data-collapse-body="hero">
           <div class="mode-grid mode-grid--3" id="mainHeroModeTiles">
-            <button type="button" class="mode-tile" data-mode="photo">
-              <div class="mode-tile__icon">📷</div>
-              <div class="mode-tile__title" data-i18n="mode_photo">Загрузить фото</div>
+            <button type="button" class="mode-tile" data-mode="auto">
+              <div class="mode-tile__icon">✨</div>
+              <div class="mode-tile__title" data-i18n="mode_auto">Предложить</div>
             </button>
             <button type="button" class="mode-tile" data-mode="select">
               <div class="mode-tile__icon">🧩</div>
               <div class="mode-tile__title" data-i18n="mode_select_appearance">Выбрать внешность</div>
             </button>
-            <button type="button" class="mode-tile" data-mode="auto">
-              <div class="mode-tile__icon">✨</div>
-              <div class="mode-tile__title" data-i18n="mode_auto">Предложить</div>
+            <button type="button" class="mode-tile" data-mode="photo">
+              <div class="mode-tile__icon">📷</div>
+              <div class="mode-tile__title" data-i18n="mode_photo">Загрузить фото</div>
             </button>
           </div>
 
@@ -653,18 +782,30 @@
               </button>
             </div>
           </div>
-        </div>
+          </div><!-- /collapse-body hero -->
+        </div><!-- /mainHeroAppearanceBlock -->
+        </div><!-- /form-section hero -->
 
-        <!-- P.3 second hero name -->
-        <div class="field">
-          <label for="second_hero_name" data-i18n="second_hero_name_label">Имя второго героя (опционально)</label>
-          <input id="second_hero_name" name="second_hero_name" />
-          <span class="field-hint" data-i18n="second_hero_name_hint">Если не нужен второй герой — оставьте поле пустым.</span>
-        </div>
+        <!-- ===== STEP 2. SECOND HERO ===== -->
+        <div class="form-section" data-section="second">
+          <p class="step-label director-only" data-i18n="step2">Шаг 2. Второй герой</p>
 
-        <!-- P.4 second hero mode -->
-        <div class="field" id="secondHeroBlock">
+        <!-- P.3 + P.4 second hero -->
+        <div class="field collapsible" id="secondHeroBlock">
           <label data-i18n="second_hero_mode_label">Второй герой: вариант (если задано имя)</label>
+
+          <div class="collapse-row" data-collapse-row="second">
+            <span class="collapse-row__text" data-i18n="collapse_second_text">Второй герой не обязателен. Можно добавить волшебного спутника.</span>
+            <button type="button" class="collapse-toggle" data-collapse-toggle="second" data-i18n="collapse_second_btn">Добавить второго героя</button>
+          </div>
+
+          <div class="collapse-body" data-collapse-body="second">
+
+          <div style="margin-bottom:12px;">
+            <label for="second_hero_name" data-i18n="second_hero_name_label">Имя второго героя (опционально)</label>
+            <input id="second_hero_name" name="second_hero_name" />
+            <span class="field-hint" data-i18n="second_hero_name_hint">Если не нужен второй герой — оставьте поле пустым.</span>
+          </div>
 
           <div class="mode-grid mode-grid--3" id="secondHeroModeTiles">
             <button type="button" class="mode-tile" data-mode="preset">
@@ -770,11 +911,24 @@
               </div>
             </div>
           </div>
-        </div>
+          </div><!-- /collapse-body second -->
+        </div><!-- /secondHeroBlock -->
+        </div><!-- /form-section second -->
+
+        <!-- ===== STEP 3. WORLD ===== -->
+        <div class="form-section" data-section="world">
+          <p class="step-label director-only" data-i18n="step3">Шаг 3. Мир сказки</p>
+
           <!-- P.5 setting mode -->
-        <div class="field">
+        <div class="field collapsible" id="settingBlock">
           <label data-i18n="setting_mode_label">Место действия *</label>
 
+          <div class="collapse-row" data-collapse-row="setting">
+            <span class="collapse-row__text" data-i18n="collapse_setting_text">Место действия: Пузырёк предложит сам.</span>
+            <button type="button" class="collapse-toggle" data-collapse-toggle="setting" data-i18n="collapse_setting_btn">Выбрать место</button>
+          </div>
+
+          <div class="collapse-body" data-collapse-body="setting">
           <div class="mode-grid mode-grid--2" id="settingModeTiles">
             <button type="button" class="mode-tile" data-mode="preset" style="aspect-ratio:auto; min-height:54px;">
               <div class="mode-tile__icon">🗺️</div>
@@ -883,7 +1037,13 @@
           <div class="inline-alert hidden" id="settingNeedChoiceAlert" data-i18n="setting_need_choice_alert">
             Выберите место (пресет) или опишите место.
           </div>
-        </div>
+          </div><!-- /collapse-body setting -->
+        </div><!-- /settingBlock -->
+        </div><!-- /form-section world -->
+
+        <!-- ===== STEP 4. MEANING ===== -->
+        <div class="form-section" data-section="meaning">
+          <p class="step-label director-only" data-i18n="step4">Шаг 4. Смысл и атмосфера</p>
 
         <!-- P.6 age group -->
         <div class="field">
@@ -899,7 +1059,7 @@
 
         <!-- P.7 narrative style -->
         <div class="field">
-          <label for="narrative_style" data-i18n="narrative_style_label">Стиль повествования *</label>
+          <label for="narrative_style" id="narrativeLabel" data-i18n="narrative_style_label">Стиль повествования *</label>
           <select id="narrative_style" name="narrative_style" required>
             <option value="calm" data-i18n="style_calm">Спокойный медитативный</option>
             <option value="adventure" data-i18n="style_adventure">Приключенческий</option>
@@ -933,6 +1093,11 @@
             <option value="imagination_creativity" data-i18n="m_imagination_creativity">Воображение и творчество</option>
           </select>
         </div>
+        </div><!-- /form-section meaning -->
+
+        <!-- ===== STEP 5. VISUAL ===== -->
+        <div class="form-section" data-section="visual">
+          <p class="step-label director-only" data-i18n="step5">Шаг 5. Иллюстрации и язык</p>
 
         <!-- P.9 illustration style -->
         <div class="field">
@@ -955,10 +1120,32 @@
             <option value="en" data-i18n="language_en">English</option>
           </select>
         </div>
+        </div><!-- /form-section visual -->
 
-        <button type="submit" id="submitBtn" data-i18n="submit">Создать сказку</button>
-        <p class="note" id="note" data-i18n="note">
-          После формы бот при необходимости запросит фото в чате.
+        <!-- ===== RECEIVE / CONTACT ===== -->
+        <div class="form-section" data-section="contact">
+          <div class="field">
+            <label data-i18n="contact_label">Куда отправить PDF?</label>
+            <div class="contact-options" id="contactOptions">
+              <label class="contact-opt"><input type="radio" name="contact_method" value="telegram" checked /> <span data-i18n="contact_telegram">В Telegram</span></label>
+              <label class="contact-opt"><input type="radio" name="contact_method" value="email" /> <span data-i18n="contact_email">На email</span></label>
+            </div>
+            <div id="emailWrap" class="hidden" style="margin-top:10px;">
+              <label for="email" data-i18n="email_label">Email для PDF</label>
+              <input id="email" name="email" type="email" inputmode="email" placeholder="name@email.com" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ORDER SUMMARY (quick only) -->
+        <div class="summary quick-only" id="orderSummary">
+          <p class="summary__title" data-i18n="summary_title">Проверьте заказ</p>
+          <dl class="summary__list" id="summaryList"></dl>
+        </div>
+
+        <button type="submit" id="submitBtn">Создать сказку</button>
+        <p class="note" id="note">
+          Если понадобится фото, бот попросит его отдельно. Фото не обязательно.
         </p>
       </form>
     </div>
@@ -1027,6 +1214,11 @@
       var storyLanguageSelect = document.getElementById('language');
       var storyLanguageTouched = false;
 
+      var modeSwitch = document.getElementById('modeSwitch');
+      var emailWrap = document.getElementById('emailWrap');
+      var narrativeLabel = document.getElementById('narrativeLabel');
+      var summaryListEl = document.getElementById('summaryList');
+
       // --- State ---
       var urlParams = new URLSearchParams(window.location.search);
       var langFromUrl = urlParams.get('lang') || 'en';
@@ -1046,11 +1238,55 @@
       var settingMode = 'preset';          // preset | custom
       var settingPresetId = null;
 
+      var formMode = 'quick';              // quick | director
+      var advancedOpened = { hero: false, second: false, setting: false };
+
       // --- i18n ---
       var i18n = {
         ru: {
           title: 'Создать сказку',
-          description: 'Заполните параметры — бот сгенерирует персональную сказку и отправит её в чат в виде PDF-книги.',
+          description: 'Выберите главное — имя, возраст, смысл и стиль. Остальное Пузырёк может предложить сам. Если хотите, откройте режиссёрский режим и настройте всё подробно.',
+          quick_subtitle: 'Можно без фото. Можно без долгой анкеты. Подробности — только по желанию.',
+          order_flow_question: 'Как хотите создать сказку?',
+          quick_card_title: 'Быстрый заказ',
+          quick_card_desc: 'Минимум вопросов. Пузырёк сам предложит детали, а вы получите готовую PDF-сказку.',
+          quick_card_badge: '≈ 2 минуты',
+          director_card_title: 'Режиссёрский режим',
+          director_card_desc: 'Подробная настройка героя, внешности, места, второго персонажа и атмосферы.',
+          director_card_badge: 'Максимальная персонализация',
+          progress_hero: '1 из 3 · Герой',
+          progress_story: '2 из 3 · История',
+          progress_receive: '3 из 3 · Получение',
+          step1: 'Шаг 1. Главный герой',
+          step2: 'Шаг 2. Второй герой',
+          step3: 'Шаг 3. Мир сказки',
+          step4: 'Шаг 4. Смысл и атмосфера',
+          step5: 'Шаг 5. Иллюстрации и язык',
+          collapse_hero_text: 'Пузырёк сам предложит образ героя. Можно настроить.',
+          collapse_hero_btn: 'Настроить героя',
+          collapse_second_text: 'Второй герой не обязателен. Можно добавить волшебного спутника.',
+          collapse_second_btn: 'Добавить второго героя',
+          collapse_setting_text: 'Место действия: Пузырёк предложит сам.',
+          collapse_setting_btn: 'Выбрать место',
+          mood_quick_label: 'Настроение сказки',
+          contact_label: 'Куда отправить PDF?',
+          contact_telegram: 'В Telegram',
+          contact_email: 'На email',
+          email_label: 'Email для PDF',
+          summary_title: 'Проверьте заказ',
+          summary_hero: 'Герой',
+          summary_age: 'Возрастная глубина',
+          summary_theme: 'Сюжет',
+          summary_illustration: 'Иллюстрации',
+          summary_language: 'Язык',
+          summary_extra: 'Дополнительно',
+          summary_extra_auto: 'Пузырёк сам предложит образ и место',
+          summary_extra_custom: 'Заданы вручную',
+          summary_empty: '—',
+          submit_quick: 'Создать сказку',
+          submit_director: 'Создать сказку с моими настройками',
+          note_quick: 'Если понадобится фото, бот попросит его отдельно. Фото не обязательно.',
+          note_director: 'Все выбранные детали будут использованы для текста и иллюстраций.',
           main_hero_name_label: 'Имя главного героя *',
           main_hero_appearance_label: 'Внешность главного героя *',
           mode_photo: 'Загрузить фото',
@@ -1271,7 +1507,48 @@
 
         en: {
           title: 'Create a story',
-          description: 'Fill in the fields — the bot will generate a personalised story and send it to the chat as a PDF book.',
+          description: 'Choose the essentials — name, age, meaning and style. Puzyrek can suggest the rest. If you like, open director mode and set everything in detail.',
+          quick_subtitle: 'No photo needed. No long questionnaire. Details only if you want them.',
+          order_flow_question: 'How would you like to create the story?',
+          quick_card_title: 'Quick order',
+          quick_card_desc: 'Minimum questions. Puzyrek suggests the details and you get a ready PDF story.',
+          quick_card_badge: '≈ 2 minutes',
+          director_card_title: 'Director mode',
+          director_card_desc: 'Detailed setup of the hero, appearance, place, second character and atmosphere.',
+          director_card_badge: 'Maximum personalisation',
+          progress_hero: '1 of 3 · Hero',
+          progress_story: '2 of 3 · Story',
+          progress_receive: '3 of 3 · Delivery',
+          step1: 'Step 1. Main character',
+          step2: 'Step 2. Second character',
+          step3: 'Step 3. Story world',
+          step4: 'Step 4. Meaning and mood',
+          step5: 'Step 5. Illustrations and language',
+          collapse_hero_text: 'Puzyrek will suggest the hero’s look. You can customise it.',
+          collapse_hero_btn: 'Customise hero',
+          collapse_second_text: 'A second character is optional. You can add a magical companion.',
+          collapse_second_btn: 'Add a second character',
+          collapse_setting_text: 'Setting: Puzyrek will suggest it.',
+          collapse_setting_btn: 'Choose a place',
+          mood_quick_label: 'Story mood',
+          contact_label: 'Where to send the PDF?',
+          contact_telegram: 'To Telegram',
+          contact_email: 'To email',
+          email_label: 'Email for the PDF',
+          summary_title: 'Review your order',
+          summary_hero: 'Hero',
+          summary_age: 'Age depth',
+          summary_theme: 'Theme',
+          summary_illustration: 'Illustrations',
+          summary_language: 'Language',
+          summary_extra: 'Extras',
+          summary_extra_auto: 'Puzyrek will suggest the look and the place',
+          summary_extra_custom: 'Set manually',
+          summary_empty: '—',
+          submit_quick: 'Create story',
+          submit_director: 'Create story with my settings',
+          note_quick: 'If a photo is needed, the bot will ask for it separately. A photo is optional.',
+          note_director: 'All selected details will be used for the text and illustrations.',
           main_hero_name_label: 'Main character’s name *',
           main_hero_appearance_label: 'Main character appearance *',
           mode_photo: 'Upload photo',
@@ -1515,6 +1792,9 @@
         if (!storyLanguageTouched && storyLanguageSelect) {
           storyLanguageSelect.value = currentLang;
         }
+
+        updateModeTexts();
+        updateSummary();
       }
 
       function setActiveLangButton() {
@@ -1590,11 +1870,112 @@
         if (settingMode === 'custom') show(settingCustomPanel);
       }
 
+      // --- Order-flow mode + summary ---
+      function setActiveModeCard() {
+        if (!modeSwitch) return;
+        var cards = modeSwitch.querySelectorAll('.mode-card');
+        for (var i = 0; i < cards.length; i++) {
+          cards[i].classList.toggle('mode-card--active', cards[i].getAttribute('data-form-mode') === formMode);
+        }
+      }
+
+      function updateModeTexts() {
+        var d = i18n[currentLang] || i18n.en;
+        if (submitBtn) submitBtn.textContent = (formMode === 'quick') ? d.submit_quick : d.submit_director;
+        var noteEl = document.getElementById('note');
+        if (noteEl) noteEl.textContent = (formMode === 'quick') ? d.note_quick : d.note_director;
+        if (narrativeLabel) narrativeLabel.textContent = (formMode === 'quick') ? d.mood_quick_label : d.narrative_style_label;
+      }
+
+      function optionLabel(id) {
+        var s = document.getElementById(id);
+        if (s && s.options && s.selectedIndex >= 0) return s.options[s.selectedIndex].textContent;
+        return '';
+      }
+
+      function updateSummary() {
+        if (!summaryListEl) return;
+        var d = i18n[currentLang] || i18n.en;
+        var heroNameEl = document.getElementById('main_hero_name');
+        var heroName = (heroNameEl && heroNameEl.value) ? heroNameEl.value.trim() : '';
+        if (!heroName) heroName = d.summary_empty;
+
+        var anyOpened = advancedOpened.hero || advancedOpened.second || advancedOpened.setting;
+        var extra = anyOpened ? d.summary_extra_custom : d.summary_extra_auto;
+
+        var rows = [
+          [d.summary_hero, heroName],
+          [d.summary_age, optionLabel('age_group')],
+          [d.summary_theme, optionLabel('moral_theme')],
+          [d.summary_illustration, optionLabel('illustration_style_id')],
+          [d.summary_language, optionLabel('language')],
+          [d.summary_extra, extra]
+        ];
+
+        summaryListEl.innerHTML = '';
+        for (var i = 0; i < rows.length; i++) {
+          var dt = document.createElement('dt');
+          dt.textContent = rows[i][0];
+          var dd = document.createElement('dd');
+          dd.textContent = rows[i][1];
+          summaryListEl.appendChild(dt);
+          summaryListEl.appendChild(dd);
+        }
+      }
+
+      function applyFormMode() {
+        document.body.classList.toggle('mode-quick', formMode === 'quick');
+        document.body.classList.toggle('mode-director', formMode === 'director');
+        setActiveModeCard();
+        updateModeTexts();
+        updateSummary();
+      }
+
       // --- Event bindings ---
       function bindEvents() {
         // Telegram init
         if (isTelegramWebApp) {
           try { tg.ready(); tg.expand(); } catch (e) {}
+        }
+
+        // Order-flow mode cards
+        if (modeSwitch) {
+          modeSwitch.addEventListener('click', function (e) {
+            var card = closestEl(e.target, '.mode-card');
+            if (!card) return;
+            formMode = card.getAttribute('data-form-mode') || 'quick';
+            applyFormMode();
+          });
+        }
+
+        // Collapsible advanced sections (quick mode)
+        var toggles = document.querySelectorAll('.collapse-toggle');
+        for (var ti = 0; ti < toggles.length; ti++) {
+          toggles[ti].addEventListener('click', function () {
+            var key = this.getAttribute('data-collapse-toggle');
+            var wrap = closestEl(this, '.collapsible');
+            if (wrap) wrap.classList.add('is-open');
+            if (key && advancedOpened.hasOwnProperty(key)) advancedOpened[key] = true;
+            updateSummary();
+          });
+        }
+
+        // Contact method (Telegram / email)
+        var contactRadios = document.querySelectorAll('input[name="contact_method"]');
+        for (var ci = 0; ci < contactRadios.length; ci++) {
+          contactRadios[ci].addEventListener('change', function () {
+            if (this.value === 'email') show(emailWrap); else hide(emailWrap);
+          });
+        }
+
+        // Live order summary
+        var summaryWatch = ['main_hero_name', 'age_group', 'moral_theme', 'illustration_style_id', 'language'];
+        for (var si = 0; si < summaryWatch.length; si++) {
+          var sEl = document.getElementById(summaryWatch[si]);
+          if (sEl) {
+            sEl.addEventListener('input', updateSummary);
+            sEl.addEventListener('change', updateSummary);
+          }
         }
 
         // Language buttons
@@ -1812,6 +2193,23 @@ if (hasSecond && secondHeroMode === 'preset' && !secondHeroPresetId) {
             };
           }
 
+          // contact / delivery
+          var contactMethodEl = document.querySelector('input[name="contact_method"]:checked');
+          var contactMethod = contactMethodEl ? contactMethodEl.value : 'telegram';
+          var emailEl = document.getElementById('email');
+          var emailVal = (emailEl && emailEl.value) ? emailEl.value.trim() : '';
+
+          if (contactMethod === 'email' && (!emailVal || emailVal.indexOf('@') === -1)) {
+            alert(currentLang === 'ru' ? 'Укажите email для отправки PDF.' : 'Please enter an email to receive the PDF.');
+            submitBtn.disabled = false;
+            return;
+          }
+
+          var advancedList = [];
+          if (advancedOpened.hero) advancedList.push('hero');
+          if (advancedOpened.second) advancedList.push('second');
+          if (advancedOpened.setting) advancedList.push('setting');
+
           var payload = {
             type: 'storybook_form',
             lang: currentLang,
@@ -1838,7 +2236,12 @@ if (hasSecond && secondHeroMode === 'preset' && !secondHeroPresetId) {
 
               ui_language: currentLang,
               needMainHeroPhoto: needMainHeroPhoto,
-              needSecondHeroPhoto: needSecondHeroPhoto
+              needSecondHeroPhoto: needSecondHeroPhoto,
+
+              order_flow_mode: formMode,
+              advanced_sections_opened: advancedList,
+              contact_method: contactMethod,
+              email: (contactMethod === 'email') ? (emailVal || null) : null
             },
             telegram: {
               initData: tg.initData,
@@ -1876,6 +2279,14 @@ if (hasSecond && secondHeroMode === 'preset' && !secondHeroPresetId) {
       // Ensure “other” wrappers start hidden/visible correctly
       if (secondType && secondType.value === 'other') show(secondTypeOtherWrap);
       if (placeType && placeType.value === 'other') show(placeTypeOtherWrap);
+
+      // Quick-mode defaults (used unless the parent opens advanced sections)
+      var narrativeSel = document.getElementById('narrative_style');
+      if (narrativeSel) narrativeSel.value = 'adventure';
+      settingPresetId = 'warm_home';
+      setActivePreset(settingPresetGrid, 'data-setting-preset', settingPresetId);
+
+      applyFormMode();
 
       bindEvents();
     })();
